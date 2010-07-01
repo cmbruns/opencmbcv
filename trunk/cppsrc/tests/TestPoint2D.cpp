@@ -1,8 +1,7 @@
-#include "geom2D.hpp"
-#include <iostream>
-
-#define BOOST_TEST_MODULE TestGeom2D
+#define BOOST_TEST_MODULE TestPoint2D
 #include <boost/test/included/unit_test.hpp>
+
+#include "geom2D.hpp"
 
 using namespace std;
 using namespace cmbcv;

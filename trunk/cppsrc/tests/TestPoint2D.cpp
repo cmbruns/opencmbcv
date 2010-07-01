@@ -1,25 +1,20 @@
 #include "geom2D.hpp"
 #include <iostream>
 
+#define BOOST_TEST_MODULE TestGeom2D
+#include <boost/test/included/unit_test.hpp>
+
 using namespace std;
 using namespace cmbcv;
+using boost::units::quantity;
+using boost::units::si::length;
+using boost::units::si::meter;
 
-void testPoint2D() {
-    Point2D x(1.0, 2.0);
-    assert(x[0] == 1.0);
+BOOST_AUTO_TEST_CASE(testPoint2D)
+{
+    Point2D x(1.0, 2.0, meter);
+    BOOST_CHECK_EQUAL(x[0], 1.0 * meter);
+    Point2D x2;
+    BOOST_CHECK_EQUAL(x2[0], 0.0 * meter);
+    // BOOST_CHECK_EQUAL(3, 2);
 }
-
-int main() {
-    try {
-        testPoint2D();
-        cout << "passed" << endl;
-        return 0;
-    } 
-    catch (std::exception exc) {
-        cout << exc.what() << endl;
-    }
-    catch (...) {}
-    cout << "!!! FAILED !!!" << endl;
-    return 1;
-}
-

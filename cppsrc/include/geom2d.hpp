@@ -16,7 +16,7 @@ namespace cmbcv {
     using boost::units::si::length;
     using boost::units::quantity;
 
-    class Point2D 
+    class Point2D
     {
     private:
         quantity<length> m_data[2]; // must be declared before x and y
@@ -54,6 +54,15 @@ namespace cmbcv {
             assert(ix >= 0);
             assert(ix <= 1);
             return m_data[ix];
+        }
+
+        Point2D operator+(const Point2D& rhs) const {
+            const Point2D& lhs = *this;
+            return Point2D(lhs.x + rhs.x, lhs.y + rhs.y);
+        }
+        Point2D operator-(const Point2D& rhs) const {
+            const Point2D& lhs = *this;
+            return Point2D(lhs.x - rhs.x, lhs.y - rhs.y);
         }
     };
 

@@ -18,42 +18,27 @@ namespace cmbcv {
 
     class Point2D
     {
-    private:
-        quantity<length> m_data[2]; // must be declared before x and y
     public:
-        quantity<length>& x;
-        quantity<length>& y;
+        quantity<length> x;
+        quantity<length> y;
 
-        Point2D() 
-            : x(m_data[0]), y(m_data[1])
-        {
-            m_data[0] = 0;
-            m_data[1] = 0;
-        }
+        Point2D() {x = y = 0;}
 
         Point2D(const quantity<length>& x, const quantity<length>& y) 
-            : x(m_data[0]), y(m_data[1])
-        {
-            m_data[0] = x;
-            m_data[1] = y;
-        }
+            : x(x), y(y) {}
 
         Point2D(Real x, Real y, length u) 
-            : x(m_data[0]), y(m_data[1])
-        {
-            m_data[0] = x*u;
-            m_data[1] = y*u;
-        }
+            : x(x*u), y(y*u) {}
 
         quantity<length>& operator[](int ix) {
             assert(ix >= 0);
             assert(ix <= 1);
-            return m_data[ix];
+            return (&x)[ix];
         }
         const quantity<length>& operator[](int ix) const {
             assert(ix >= 0);
             assert(ix <= 1);
-            return m_data[ix];
+            return (&x)[ix];
         }
 
         Point2D operator+(const Point2D& rhs) const {

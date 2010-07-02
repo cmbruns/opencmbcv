@@ -1,14 +1,8 @@
 #include <cassert>
-#include <boost/units/systems/si/length.hpp>
-#include <boost/units/units_fwd.hpp>
-#include <boost/units/base_dimension.hpp>
-#include <boost/units/base_unit.hpp>
-#include <boost/units/derived_dimension.hpp>
-#include <boost/units/make_system.hpp>
-#include <boost/units/io.hpp>
+
 #include <boost/units/quantity.hpp>
-#include <boost/units/static_constant.hpp>
-#include <boost/units/unit.hpp>
+#include <boost/units/systems/si/length.hpp>
+#include <boost/units/io.hpp>
 
 namespace cmbcv {
 
@@ -41,14 +35,8 @@ namespace cmbcv {
             return (&x)[ix];
         }
 
-        Point2D operator+(const Point2D& rhs) const {
-            const Point2D& lhs = *this;
-            return Point2D(lhs.x + rhs.x, lhs.y + rhs.y);
-        }
-        Point2D operator-(const Point2D& rhs) const {
-            const Point2D& lhs = *this;
-            return Point2D(lhs.x - rhs.x, lhs.y - rhs.y);
-        }
+        Point2D operator+(const Point2D& rhs) const;
+        Point2D operator-(const Point2D& rhs) const;
     };
 
 } // namespace cmbcv

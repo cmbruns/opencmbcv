@@ -12,6 +12,8 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+add_library(OpenCmbCv geom2D.cpp)
+
 if(CMBCV_DO_TESTING)
     add_subdirectory(tests)
 endif()

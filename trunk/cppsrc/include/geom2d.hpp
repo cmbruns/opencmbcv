@@ -4,6 +4,8 @@
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/io.hpp>
 
+#include "measure.hpp"
+
 namespace cmbcv {
 
     typedef double Real;

@@ -14,7 +14,7 @@ mb = module_builder.module_builder_t(
     indexing_suite_version=2,
     define_symbols=["_HAS_TR1=0"])
 
-mb.build_code_creator(module_name='_cmbcv')
+mb.build_code_creator(module_name='cmbcv')
 mb.write_module(os.path.join('generated_code', 'opencmbcv.pypp.cpp'))
 # If all succeeds, record this accomplishment by touching a particular file
 open(os.path.join(os.path.abspath('.'), 'generated_code',

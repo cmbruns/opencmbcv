@@ -49,12 +49,14 @@ On Windows:
             b. Far click in Windows Explorer and select "Tortoise CVS checkout"
             c. Figure out which of those command line bits to type into TortoiseCVS GUI.
     2. Configure with CMake
+        Run CMake
         Browse to gccxml source directory containing CMakeLists.txt
         Create new build directory by appending "/bin" to the source directory name.
         Configure, repeat until converged
         Generate
+        Close CMake
     3. Build and install
-        a. (Windows) Open gccxml.sln in your gccxml/bin directory (with the rainbow infinity icon). Visual Studio should launch (as asministrator).
+        a. (Windows) Open gccxml.sln in your gccxml/bin directory (with the rainbow infinity icon). Visual Studio should launch (as administrator).
         b. In the solution explorer pane far click "ALL_BUILD"->Build
         c. After build completes, far click "RUN_TESTS"->Build
         d. After tests complete, far click "INSTALL"->Build
@@ -84,5 +86,15 @@ On Windows:
 
 3. Building
 
-    3.1 Run CMake
-    3.2 Build/make
+    3.1 Configure with CMake
+        Run CMake
+        Browse to opencmbcv source directory containing CMakeLists.txt
+        Create new build directory by appending "/bin" to the source directory name.
+        Configure, repeat until converged
+        Generate
+        Close CMake
+    3.2 Build and install
+        a. (Windows) Open OpenCmbCv.sln in your opencmbcv/bin directory (with the rainbow infinity icon). Visual Studio should launch (as administrator).
+        b. In the solution explorer pane far click "ALL_BUILD"->Build
+        c. After build completes, far click "RUN_TESTS"->Build
+        

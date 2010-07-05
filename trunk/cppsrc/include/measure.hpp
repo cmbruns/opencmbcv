@@ -21,7 +21,7 @@ typedef physical_dimension_t<0,0,1> Pixels;
 template<class PDIM>
 struct unit_t 
 {
-    typedef PDIM dimension_t;
+    typedef PDIM physical_dimension_t;
 
     // Adding or subtracting compatible units yield first unit
     const unit_t<PDIM>& operator+(const unit_t<PDIM>& rhs) const {

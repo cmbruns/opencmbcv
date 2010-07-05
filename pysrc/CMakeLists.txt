@@ -31,3 +31,25 @@ add_custom_target(GenerateBoostPythonSources
         generate_bp_source.py
 )
 
+# Build binary cmbcv module
+file(GLOB_RECURSE ALL_SRCS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+set(BUILD_BASE "${CMAKE_BINARY_DIR}/py_build")
+file(RELATIVE_PATH BUILD_BASE_REL "${CMAKE_CURRENT_SOURCE_DIR}" "${BUILD_BASE}")
+file(TO_NATIVE_PATH "${BUILD_BASE_REL}" NATIVE_BUILD_BASE)
+add_custom_target(BuildPyModule ALL
+    COMMAND "${PYTHON_EXECUTABLE}" setup.py 
+        build --build-base="${NATIVE_BUILD_BASE}"
+    DEPENDS
+        setup.py
+        ${ALL_SRCS}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMENT "Building binary python cmbcv module"
+    SOURCES 
+        "setup.py" 
+        ${ALL_SRCS}
+)
+
+add_dependencies(BuildPyModule GenerateBoostPythonSources)

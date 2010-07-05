@@ -1,0 +1,88 @@
+
+1. Prerequisites
+
+Before building this package, you must install the following software:
+
+On Windows:
+* Visual Studio 9 express
+    http://www.microsoft.com/express/
+    (Version 9 is important for generating python bindings)
+
+* CMake 2.8
+    http://www.cmake.org/
+    On Windows, you do *not* need to uninstall earlier versions of CMake, if you have them.  You do not need to add CMake to your PATH.
+    It is probably easier to use the binary version for your platform if there is one.
+    
+* Python 2.6
+    http://www.python.org/
+    On Windows, use Visual Studio version 9.0 with Python 2.6, to be compatible with other binary python modules.
+    
+* Boost, including Boost.Python
+    http://www.boost.org/
+    On Windows, get the installer from 
+        http://www.boostpro.com/download
+    and be sure to install the boost.python extension. (VC9.0 version)
+        Get the latest version of the installer.
+        Select Visual Studio C++ 9.0 version
+        Leave the "Variants" unchecked.  They will all be installed this way.
+        
+* A subversion client
+    Such as TortoiseSVN (Windows)
+        http://tortoisesvn.net/downloads
+    or subversion itself (svn)
+    
+* A CVS client
+    Such as TortoiseCVS (Windows)
+        http://www.tortoisecvs.org/download.shtml
+    or CVS itself (cvs) on non-Windows platforms
+        http://www.nongnu.org/cvs/#downloading
+    
+* GCCXML
+    1. Check out latest version from CVS repository.
+        On the command line (non-Windows):
+            cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML login
+            (just press enter when prompted for a password)
+            cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
+        TortoiseCVS (Windows):
+            We had trouble getting this working in Vista, so maybe use the cygwin version of cvs
+            a. Choose a folder where you will check out the GCCXML source (e.g. "My Documents/cvs").  Browse to that folder.
+            b. Far click in Windows Explorer and select "Tortoise CVS checkout"
+            c. Figure out which of those command line bits to type into TortoiseCVS GUI.
+    2. Configure with CMake
+        Browse to gccxml source directory containing CMakeLists.txt
+        Create new build directory by appending "/bin" to the source directory name.
+        Configure, repeat until converged
+        Generate
+    3. Build and install
+        a. (Windows) Open gccxml.sln in your gccxml/bin directory (with the rainbow infinity icon). Visual Studio should launch (as asministrator).
+        b. In the solution explorer pane far click "ALL_BUILD"->Build
+        c. After build completes, far click "RUN_TESTS"->Build
+        d. After tests complete, far click "INSTALL"->Build
+        e. Notice which folder gccxml installed to.  Close Visual Studio
+        f. (Windows) From the command prompt (as administrator) in the install directory,
+            gccxml_vcconfig.bat
+
+* pygccxml
+    Check out code using svn or TortoiseSVN
+        svn co https://pygccxml.svn.sourceforge.net/svnroot/pygccxml/pygccxml_dev pygccxml
+    Install from the command prompt (as administrator)
+        cd pygccxml
+        python setup.py install
+
+* pyplusplus (similarly to pygccxml...)
+    svn co https://pygccxml.svn.sourceforge.net/svnroot/pygccxml/pyplusplus_dev pyplusplus
+    cd pyplusplus
+    python setup.py install
+    
+2. Get the source code
+
+    Project members with write access:
+        svn checkout https://opencmbcv.googlecode.com/svn/trunk/ opencmbcv --username <your_id>@gmail.com
+    
+    Everyone else:
+        svn checkout http://opencmbcv.googlecode.com/svn/trunk/ opencmbcv
+
+3. Building
+
+    3.1 Run CMake
+    3.2 Build/make

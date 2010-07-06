@@ -31,6 +31,12 @@ add_custom_target(GenerateBoostPythonSources
         generate_bp_source.py
 )
 
+get_target_property(CVLIBDIR OpenCmbCv LOCATION)
+# We need a real path, without windows $(OutDir) macro
+# Always use the Release library - HACK
+string(REPLACE "\$\(OutDir\)" "Release" CVLIBDIR "${CVLIBDIR}")
+message("${CVLIBDIR}")
+
 # Build binary cmbcv module
 file(GLOB_RECURSE ALL_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
@@ -39,7 +45,7 @@ file(GLOB_RECURSE ALL_SRCS
 set(BUILD_BASE "${CMAKE_BINARY_DIR}/py_build")
 file(RELATIVE_PATH BUILD_BASE_REL "${CMAKE_CURRENT_SOURCE_DIR}" "${BUILD_BASE}")
 file(TO_NATIVE_PATH "${BUILD_BASE_REL}" NATIVE_BUILD_BASE)
-add_custom_target(BuildPyModule ALL
+add_custom_target(BuildPyModule
     COMMAND "${PYTHON_EXECUTABLE}" setup.py 
         build --build-base="${NATIVE_BUILD_BASE}"
     DEPENDS

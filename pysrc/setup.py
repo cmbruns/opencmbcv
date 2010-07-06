@@ -35,7 +35,7 @@ setup(name="OpenCmbCv",
       ext_modules=[
                    Extension("cmbcv", std_files,
                      library_dirs=library_dirs,
-                     libraries=[boost_library],
+                     libraries=[boost_library, "OpenCmbCv"],
                      include_dirs=std_includes,
                      extra_compile_args=CFLAGS,
                      depends=[]),

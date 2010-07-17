@@ -95,6 +95,7 @@ On Windows:
         Close CMake
     3.2 Build and install
         a. (Windows) Open OpenCmbCv.sln in your opencmbcv/bin directory (with the rainbow infinity icon). Visual Studio should launch (as administrator).
+        b. Select "Release" mode (not "Debug") at the top
         b. In the solution explorer pane far click "ALL_BUILD"->Build
         c. After build completes, far click "RUN_TESTS"->Build
         

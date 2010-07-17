@@ -32,6 +32,8 @@ add_custom_target(GenerateBoostPythonSources
 )
 
 # Build binary cmbcv module
+
+
 set(PY_STAGING_DIR "${CMAKE_CURRENT_BINARY_DIR}/py_stage")
 file(MAKE_DIRECTORY "${PY_STAGING_DIR}")
 # Create CVLIBDIR and PY_SOURCE_DIR variables to help setup.py build process
@@ -71,6 +73,28 @@ add_custom_target(BuildPyModule
 
 add_dependencies(BuildPyModule GenerateBoostPythonSources)
 
+# Copy boost python dll into binary area
+mark_as_advanced(CLEAR Boost_PYTHON_LIBRARY_RELEASE)
+string(REPLACE ".lib" ".dll" BOOST_PYTHON_DLL "${Boost_PYTHON_LIBRARY_RELEASE}")
+set(src "${BOOST_PYTHON_DLL}")
+get_filename_component(libname "${src}" NAME)
+# TODO - non Windows locations...
+set(dest "${BUILD_BASE}/lib.win32-2.6/${libname}")
+add_custom_command(
+    OUTPUT "${dest}"
+    DEPENDS "${src}" BuildPySimTKModules
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy "${src}" "${dest}"
+    COMMENT "Copying ${libname} to ${dest}"
+)
+# message("${dest}")
+add_custom_target(CopyBoostLibrary
+    DEPENDS
+        BuildPyModule
+        "${dest}"
+    COMMENT "Copying boost library"
+)
+
 if(CMBCV_DO_TESTING)
     # Local install is required for tests and documentation
     # Use python distutils to build test install area
@@ -84,6 +108,7 @@ if(CMBCV_DO_TESTING)
             install --home="${NATIVE_PY_TEST_INSTALL_DIR}"
         DEPENDS
             BuildPyModule
+            CopyBoostLibrary
             "${PY_STAGING_DIR}/setup.py"
         WORKING_DIRECTORY "${PY_STAGING_DIR}"
         COMMENT "Installing python cmbcv module to local directory ${NATIVE_PY_TEST_INSTALL_DIR}"

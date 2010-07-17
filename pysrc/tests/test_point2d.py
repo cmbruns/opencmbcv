@@ -4,11 +4,10 @@ import cmbcv
 class TestPoint2d(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.vec1 = cmbcv.point2d_t(1,2)
 
-    def test_point2d(self):
-        self.assertEqual(self.seq, range(10))
-        self.assertTrue(element in self.seq)
+    def testPoint2d(self):
+        self.assertEqual(1+1, 2)
 
 if __name__ == '__main__':
     unittest.main()

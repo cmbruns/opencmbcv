@@ -1,6 +1,15 @@
 # Python CMakeLists.txt
 
 find_program(PYTHON_EXECUTABLE 
+    NAMES python2.6 python26
+    NO_DEFAULT_PATH
+)
+find_program(PYTHON_EXECUTABLE 
+    NAMES python
+    PATHS "C:/Python26/"
+    NO_DEFAULT_PATH
+)
+find_program(PYTHON_EXECUTABLE 
     NAMES python2.6 python26 python
     PATHS "C:/Python26/"
 )
@@ -12,6 +21,12 @@ set(Boost_ADDITIONAL_VERSIONS 1.42 1.42.0)
 find_package(Boost COMPONENTS python REQUIRED)
 mark_as_advanced(Boost_LIB_DIAGNOSTIC_DEFINITIONS)
 mark_as_advanced(CLEAR Boost_PYTHON_LIBRARY_RELEASE)
+
+
+find_program(GCCXML_EXECUTABLE
+    NAMES gccxml
+    PATHS
+        "C:/Program Files/gccxml/bin")
 
 set(BPGEN_STAMP "${CMAKE_CURRENT_SOURCE_DIR}/generated_code/generate_bp.stamp")
 add_custom_command(
@@ -88,7 +103,7 @@ add_custom_command(
     COMMENT "Copying ${libname} to ${dest}"
 )
 # message("${dest}")
-add_custom_target(CopyBoostLibrary
+add_custom_target(CopyBoostLibrary ALL
     DEPENDS
         BuildPyModule
         "${dest}"
@@ -102,7 +117,7 @@ if(CMBCV_DO_TESTING)
     file(TO_NATIVE_PATH "${PY_TEST_INSTALL_DIR}" NATIVE_PY_TEST_INSTALL_DIR)
     set(PySimTK_LOCAL_PYTHONPATH "${PY_TEST_INSTALL_DIR}/lib/python")
     file(TO_NATIVE_PATH "${PySimTK_LOCAL_PYTHONPATH}" NATIVE_LOCAL_PYTHONPATH)
-    add_custom_target(InstallPyModuleLocally
+    add_custom_target(InstallPyModuleLocally ALL
         COMMAND "${PYTHON_EXECUTABLE}" setup.py 
             build --build-base="${NATIVE_BUILD_BASE}"
             install --home="${NATIVE_PY_TEST_INSTALL_DIR}"

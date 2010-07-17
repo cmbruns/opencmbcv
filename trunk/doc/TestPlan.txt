@@ -1,0 +1,13 @@
+Things To Do:
+
+1. In test_point2d.py:
+    test == and != for:
+        [x] plain numbers
+        [ ] lists vs lists
+        [ ] tuples vs tuples
+        [ ] point2ds vs point2ds
+        [ ] lists vs tuples
+        [ ] lists vs point2ds
+        [ ] tuples vs point2ds
+
+        

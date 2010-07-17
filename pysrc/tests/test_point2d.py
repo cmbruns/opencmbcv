@@ -29,6 +29,8 @@ class TestPoint2d(unittest.TestCase):
         self.assertEqual((1, 3), (1, 3))
         self.assertEqual(tuple([1, 3]), (1, 3))
         # It appears that tuples cannot be compared to lists with == nor !=
+        # self.assertEqual((1, 3), [1, 3])
+        self.assertTrue((1, 3) == [1, 3])
 
 if __name__ == '__main__':
     unittest.main()

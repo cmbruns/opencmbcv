@@ -13,6 +13,10 @@ if(Boost_FOUND)
 endif()
 
 add_library(OpenCmbCv STATIC geom2D.cpp)
+# Hack to place library in predictable location, regardless of "build type"
+if(MSVC)
+    set_target_properties(OpenCmbCv PROPERTIES PREFIX "../")
+endif()
 
 if(CMBCV_DO_TESTING)
     add_subdirectory(tests)

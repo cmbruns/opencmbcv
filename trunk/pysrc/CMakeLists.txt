@@ -31,15 +31,22 @@ add_custom_target(GenerateBoostPythonSources
         generate_bp_source.py
 )
 
-get_target_property(CVLIBDIR OpenCmbCv LOCATION)
-# We need a real path, without windows $(OutDir) macro
-# Always use the Release library - HACK
-string(REPLACE "\$\(OutDir\)" "Release" CVLIBDIR "${CVLIBDIR}")
-message("${CVLIBDIR}")
-
 # Build binary cmbcv module
 set(PY_STAGING_DIR "${CMAKE_CURRENT_BINARY_DIR}/py_stage")
 file(MAKE_DIRECTORY "${PY_STAGING_DIR}")
+# Create CVLIBDIR and PY_SOURCE_DIR variables to help setup.py build process
+get_target_property(CVLIBDIR OpenCmbCv LOCATION)
+# We need a real path, without windows $(OutDir) macro
+# Always use the Release library - HACK
+string(REPLACE "\$\(OutDir\)/../" "" CVLIBDIR "${CVLIBDIR}")
+get_filename_component(CVLIBDIR "${CVLIBDIR}" PATH)
+file(RELATIVE_PATH CVLIBDIR "${PY_STAGING_DIR}" "${CVLIBDIR}")
+# message("CVLIBDIR = ${CVLIBDIR}")
+# message("CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
+# message("PY_STAGING_DIR = ${PY_STAGING_DIR}")
+file(RELATIVE_PATH PY_SOURCE_DIR "${PY_STAGING_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+# message("PY_SOURCE_DIR = ${PY_SOURCE_DIR}")
+
 configure_file(setup.py.in "${PY_STAGING_DIR}/setup.py" @ONLY)
 file(GLOB_RECURSE ALL_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
@@ -57,8 +64,32 @@ add_custom_target(BuildPyModule
     WORKING_DIRECTORY "${PY_STAGING_DIR}"
     COMMENT "Building binary python cmbcv module"
     SOURCES 
+        setup.py.in
         "${PY_STAGING_DIR}/setup.py"
         ${ALL_SRCS}
 )
 
 add_dependencies(BuildPyModule GenerateBoostPythonSources)
+
+if(CMBCV_DO_TESTING)
+    # Local install is required for tests and documentation
+    # Use python distutils to build test install area
+    set(PY_TEST_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/py_install")
+    file(TO_NATIVE_PATH "${PY_TEST_INSTALL_DIR}" NATIVE_PY_TEST_INSTALL_DIR)
+    set(PySimTK_LOCAL_PYTHONPATH "${PY_TEST_INSTALL_DIR}/lib/python")
+    file(TO_NATIVE_PATH "${PySimTK_LOCAL_PYTHONPATH}" NATIVE_LOCAL_PYTHONPATH)
+    add_custom_target(InstallPyModuleLocally
+        COMMAND "${PYTHON_EXECUTABLE}" setup.py 
+            build --build-base="${NATIVE_BUILD_BASE}"
+            install --home="${NATIVE_PY_TEST_INSTALL_DIR}"
+        DEPENDS
+            BuildPyModule
+            "${PY_STAGING_DIR}/setup.py"
+        WORKING_DIRECTORY "${PY_STAGING_DIR}"
+        COMMENT "Installing python cmbcv module to local directory ${NATIVE_PY_TEST_INSTALL_DIR}"
+        SOURCES
+            "${PY_STAGING_DIR}/setup.py"
+    )
+    add_dependencies(InstallPyModuleLocally BuildPyModule)
+    add_subdirectory(tests)
+endif()

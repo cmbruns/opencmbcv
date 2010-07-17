@@ -10,20 +10,19 @@ CFLAGS = []
 
 if sys.platform == "win32" :
     include_dirs = ["C:/Program Files/boost/boost_1_42"
-                   ,"../cppsrc/include"
-                   ,"."]
+                   , os.path.join('@PY_SOURCE_DIR@', "../cppsrc/include")
+                   , "."]
     boost_library="boost_python-vc90-mt-1_42"
     library_dirs=['C:/Program Files/boost/boost_1_42/lib'
-                  , "C:/Program Files/SimTK/lib"
-                  , "C:/Program Files/OpenMM/lib"]
+                  , "@CVLIBDIR@"]
     # Avoid compiler warning and subsequent link error with MSVC9 (/EHsc)
     CFLAGS.append('/EHsc')
     # And avoid strange MSVC header errors, to match gccxml args (-D"_HAS_TR1=0")
     CFLAGS.append('-D"_HAS_TR1=0"')
 
-std_files = glob(os.path.join('generated_code', '*.cpp'))
-std_includes = ['generated_code',]
-std_includes.append('src/external/std')
+std_files = glob(os.path.join('@PY_SOURCE_DIR@', 'generated_code', '*.cpp'))
+std_includes = [os.path.join('@PY_SOURCE_DIR@', 'generated_code')]
+std_includes.append(os.path.join('@PY_SOURCE_DIR@', 'src/external/std'))
 std_includes.extend(include_dirs)
 
 setup(name="OpenCmbCv",    

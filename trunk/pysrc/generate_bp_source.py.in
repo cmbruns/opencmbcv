@@ -6,11 +6,11 @@ from pygccxml import declarations
 
 mb = module_builder.module_builder_t(
     files = ["geom2D.hpp"], 
-    gccxml_path="C:/Program Files/gccxml_sherm/bin/gccxml.exe", 
+    gccxml_path="@GCCXML_EXECUTABLE@", 
     include_paths=[
         "C:/Python26/include", 
         "../cppsrc/include",
-        "C:/Program Files/boost/boost_1_42"], 
+        "@Boost_INCLUDE_DIR@"], 
     indexing_suite_version=2,
     define_symbols=["_HAS_TR1=0"])
 

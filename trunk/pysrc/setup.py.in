@@ -9,11 +9,11 @@ from glob import glob
 CFLAGS = []
 
 if sys.platform == "win32" :
-    include_dirs = ["C:/Program Files/boost/boost_1_42"
+    include_dirs = ["@Boost_INCLUDE_DIR@"
                    , os.path.join('@PY_SOURCE_DIR@', "../cppsrc/include")
                    , "."]
-    boost_library="boost_python-vc90-mt-1_42"
-    library_dirs=['C:/Program Files/boost/boost_1_42/lib'
+    boost_library="@BOOST_LIB_ROOT@"
+    library_dirs=['@BOOST_LIB_DIR@'
                   , "@CVLIBDIR@"]
     # Avoid compiler warning and subsequent link error with MSVC9 (/EHsc)
     CFLAGS.append('/EHsc')

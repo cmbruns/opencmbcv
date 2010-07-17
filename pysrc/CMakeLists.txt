@@ -38,23 +38,26 @@ string(REPLACE "\$\(OutDir\)" "Release" CVLIBDIR "${CVLIBDIR}")
 message("${CVLIBDIR}")
 
 # Build binary cmbcv module
+set(PY_STAGING_DIR "${CMAKE_CURRENT_BINARY_DIR}/py_stage")
+file(MAKE_DIRECTORY "${PY_STAGING_DIR}")
+configure_file(setup.py.in "${PY_STAGING_DIR}/setup.py" @ONLY)
 file(GLOB_RECURSE ALL_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-set(BUILD_BASE "${CMAKE_BINARY_DIR}/py_build")
-file(RELATIVE_PATH BUILD_BASE_REL "${CMAKE_CURRENT_SOURCE_DIR}" "${BUILD_BASE}")
+set(BUILD_BASE "${CMAKE_CURRENT_BINARY_DIR}/py_build")
+file(RELATIVE_PATH BUILD_BASE_REL "${PY_STAGING_DIR}" "${BUILD_BASE}")
 file(TO_NATIVE_PATH "${BUILD_BASE_REL}" NATIVE_BUILD_BASE)
 add_custom_target(BuildPyModule
     COMMAND "${PYTHON_EXECUTABLE}" setup.py 
         build --build-base="${NATIVE_BUILD_BASE}"
     DEPENDS
-        setup.py
+        "${PY_STAGING_DIR}/setup.py"
         ${ALL_SRCS}
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    WORKING_DIRECTORY "${PY_STAGING_DIR}"
     COMMENT "Building binary python cmbcv module"
     SOURCES 
-        "setup.py" 
+        "${PY_STAGING_DIR}/setup.py"
         ${ALL_SRCS}
 )
 

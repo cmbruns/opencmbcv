@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iostream>
 
 namespace cmbcv {
 
@@ -59,10 +60,19 @@ namespace cmbcv {
             assert(ix <= 1);
             return (&x)[ix];
         }
-
-        point2d_t operator+(const point2d_t& rhs) const {
+        bool operator!=(const point2d_t& rhs) const {
             const point2d_t& lhs = *this;
-            return point2d_t(lhs.x + rhs.x, lhs.y + rhs.y);
+            if (lhs.x != rhs.x) return true;
+            if (lhs.y != rhs.y) return true;
+            return false;
+        }
+        bool operator==(const point2d_t& rhs) const {
+            const point2d_t& lhs = *this;
+            return !(lhs != rhs);
+        }
+        std::ostream& print(std::ostream& os) const {
+            os << "(" << x << ", " << y << ")";
+            return os;
         }
     };
 
@@ -99,12 +109,6 @@ namespace cmbcv {
             return (&x)[ix];
         }
 
-        // TODO other arithmetic operators
-        point2d_t operator+(const homogeneous_point2d_t& rhs) const {
-            const homogeneous_point2d_t& lhs = *this;
-            return point2d_t(lhs) + point2d_t(rhs);
-        }
-
         // line through two points
         line2d_t line(const homogeneous_point2d_t& rhs) const;
     };
@@ -138,4 +142,7 @@ namespace cmbcv {
         }
     };
 
+    std::ostream& operator<<(std::ostream& os, const cmbcv::point2d_t& p);
+
 } // namespace cmbcv
+

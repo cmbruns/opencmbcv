@@ -37,6 +37,7 @@ class TestPoint2d(unittest.TestCase):
         v2 = cmbcv.point2d_t(5,2)
         self.assertEqual(v.x, v2.x)
         self.assertEqual(v.y, v2.y)
+        self.assertTrue(v == v2)
         self.assertEqual(v, v2)
     
     # It appears that tuples cannot be compared to lists with == nor !=

@@ -26,7 +26,6 @@ BOOST_PYTHON_MODULE(cmbcv){
         
         }
         homogeneous_point2d_t_exposer.def( "as__scope_cmbcv_scope_point2d_t", &cmbcv::homogeneous_point2d_t::operator ::cmbcv::point2d_t  );
-        homogeneous_point2d_t_exposer.def( bp::self + bp::self );
         { //::cmbcv::homogeneous_point2d_t::operator[]
         
             typedef double & ( ::cmbcv::homogeneous_point2d_t::*__getitem___function_type )( int ) ;
@@ -77,7 +76,8 @@ BOOST_PYTHON_MODULE(cmbcv){
 
     bp::class_< cmbcv::point2d_t >( "point2d_t", bp::init< >() )    
         .def( bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) )    
-        .def( bp::self + bp::self )    
+        .def( bp::self != bp::self )    
+        .def( bp::self == bp::self )    
         .def( 
             "__getitem__"
             , (double & ( ::cmbcv::point2d_t::* )( int ) )( &::cmbcv::point2d_t::operator[] )

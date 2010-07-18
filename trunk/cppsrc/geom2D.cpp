@@ -11,4 +11,7 @@ namespace cmbcv {
         return answer;
     }
 
+    std::ostream& operator<<(std::ostream& os, const point2d_t& p) {
+        return p.print(os);
+    }
 } // namespace cmbcv

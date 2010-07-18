@@ -16,10 +16,8 @@ BOOST_AUTO_TEST_CASE(testPoint2D)
     point2d_t x2;
     BOOST_CHECK_EQUAL(x2[0], 0.0);
     BOOST_CHECK_EQUAL(x2[1], 0.0);
-    // addition
-    point2d_t x3 = x1 + x1;
-    BOOST_CHECK_EQUAL(x3[0], 2.0);
-    BOOST_CHECK_EQUAL(x3[1], 4.0);
+    point2d_t x3(1.0, 2.0);
+    BOOST_CHECK_EQUAL(x1, x3);
 }
 
 BOOST_AUTO_TEST_CASE(testHomogeneousPoint2D)
@@ -31,10 +29,6 @@ BOOST_AUTO_TEST_CASE(testHomogeneousPoint2D)
     homogeneous_point2d_t x2;
     BOOST_CHECK_EQUAL(x2[0], 0.0);
     BOOST_CHECK_EQUAL(x2[1], 0.0);
-    // addition
-    homogeneous_point2d_t x3 = x1 + x1;
-    BOOST_CHECK_EQUAL(x3[0], 2.0);
-    BOOST_CHECK_EQUAL(x3[1], 4.0);
 }
 
 BOOST_AUTO_TEST_CASE(testLine2D)

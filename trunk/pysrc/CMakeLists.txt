@@ -40,15 +40,23 @@ add_custom_command(
     COMMAND "${PYTHON_EXECUTABLE}" ${GENERATE_SOURCE_PY}
         > "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.log"
         2> "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.err"
-    OUTPUT "${BPGEN_STAMP}"
+    OUTPUT 
+        "${BPGEN_STAMP}"
+        "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.log"
+        "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.err"
     DEPENDS
         ${GENERATE_SOURCE_PY}
+        OpenCmbCv
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     COMMENT "Creating boost python wrapper source files.  Examine generate_bp_source.err file for details"
 )
 
 add_custom_target(GenerateBoostPythonSources
-    DEPENDS "${BPGEN_STAMP}"
+    DEPENDS
+        "${BPGEN_STAMP}"
+        "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.log"
+        "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.err"
+        OpenCmbCv
     SOURCES
         generate_bp_source.py.in
         "${GENERATE_SOURCE_PY}"

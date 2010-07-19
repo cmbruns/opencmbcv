@@ -3,57 +3,46 @@
 
 namespace cmbcv {
 
-    // base_vec_t class provides indexing, equality, printing, and first element
+    // vec_t<int> class defines indexing, equality, and printing for use by other classes.
+    // But reuse will be by containment, rather than inheritance.
     template<unsigned int DIM>
-    struct base_vec_t
+    class vec_t 
     {
-        union {
-            double x;
-            double a;
-        };
-        
-        base_vec_t() {
-            // relies on derived classes to increase memory footprint appropriately
-            assert(sizeof(*this) == DIM * sizeof(double));
-        }
-        
-        base_vec_t(double x) : x(x) 
-        {
-            // relies on derived classes to increase memory footprint appropriately
-            assert(sizeof(*this) == DIM * sizeof(double));
-        }
+    protected:
+        double data[DIM];
 
+    public:
         unsigned int size() const {return DIM;}
-        
+
         const double& operator[](int ix) const {
             assert(ix >= 0);
             assert(ix < DIM);
-            return (&x)[ix];
+            return data[ix];
         }
         
         double& operator[](int ix) {
             assert(ix >= 0);
             assert(ix < DIM);
-            return (&x)[ix];
+            return data[ix];
         }
-        
-        bool operator!=(const base_vec_t& rhs) const {
-            const base_vec_t& lhs = *this;
-            for (unsigned int ix(0); ix < DIM; ++ix)
+
+        bool operator!=(const vec_t& rhs) const {
+            const vec_t& lhs = *this;
+            for (unsigned int ix(0); ix < size(); ++ix)
                 if (lhs[ix] != rhs[ix]) return true;
             return false;
         }
         
-        bool operator==(const base_vec_t<DIM>& rhs) const {
-            const base_vec_t& lhs = *this;
+        bool operator==(const vec_t& rhs) const {
+            const vec_t& lhs = *this;
             return !(lhs != rhs);
         }
-            
+
         std::ostream& print(std::ostream& os) const 
         {
-            const base_vec_t& v = *this;
+            const vec_t& v = *this;
             os << "~[";
-            for (unsigned int ix(0); ix < DIM; ++ix) {
+            for (unsigned int ix(0); ix < size(); ++ix) {
                 if (ix > 0) os << ", ";
                 os << v[ix];
             } 
@@ -62,22 +51,73 @@ namespace cmbcv {
         }
     };
 
-    struct vec2_t : public base_vec_t<2> 
+    class vec2_t
     {
-        // double x; // already defined in base class
-        double y;
-        
-        vec2_t(double x, double y) : base_vec_t<2>(x), y(y) {}
+    public:
+        // Use union to permit specifying content by members x, y
+        union {
+            vec_t<2> vec;
+            struct { double x, y; };
+        };
+
+        vec2_t(double xx, double yy) {
+            // initialize in body to avoid warnings about initializer list
+            x = xx; y = yy;
+        }
+
+        unsigned int size() const {return vec.size();}
+
+        double& operator[](int ix) {return vec[ix];}
+
+        const double& operator[](int ix) const {return vec[ix];}
+
+        bool operator!=(const vec2_t& rhs) const {
+            return this->vec != rhs.vec;
+        }
+
+        bool operator==(const vec2_t& rhs) const {
+            return this->vec == rhs.vec;
+        }
+
+        std::ostream& print(std::ostream& os) const {
+            vec.print(os);
+            return os;
+        }
     };
 
-    struct vec3_t : public base_vec_t<3> 
+    class vec3_t
     {
-        // double x; // already defined in base class
-        double y;
-        double z;
-        
-        vec3_t(double x, double y, double z) : base_vec_t<3>(x), y(y), z(z) {}
-            
+    public:
+        // Use union to permit specifying content by members x, y, z
+        union {
+            vec_t<3> vec;
+            struct { double x, y, z; };
+        };
+
+        vec3_t(double x, double y, double z) {
+            // initialize in body to avoid warnings about initializer list
+            this->x = x; this->y = y; this->z = z;
+        }
+
+        unsigned int size() const {return vec.size();}
+
+        double& operator[](int ix) {return vec[ix];}
+
+        const double& operator[](int ix) const {return vec[ix];}
+
+        bool operator!=(const vec3_t& rhs) const {
+            return this->vec != rhs.vec;
+        }
+
+        bool operator==(const vec3_t& rhs) const {
+            return this->vec == rhs.vec;
+        }
+
+        std::ostream& print(std::ostream& os) const {
+            vec.print(os);
+            return os;
+        }
+
         vec3_t cross(const vec3_t& rhs) const {
             const vec3_t& lhs = *this;
             return vec3_t(
@@ -85,37 +125,41 @@ namespace cmbcv {
                 lhs[2]*rhs[0] - lhs[0]*rhs[2],
                 lhs[0]*rhs[1] - lhs[1]*rhs[0]);
         }
-
     };
 
     // forward declarations
-    struct homogeneous_point2_t;
-    struct line2_t;
+    class homogeneous_point2_t;
+    class line2_t;
 
     // point2_t describes pixel coordinates in an image.
     // point2_t represents a column vector.
-    struct point2_t : public base_vec_t<2>
-    {
-        // double x; // already defined in base class
-        double y;
-
-        point2_t(double x, double y) 
-            : base_vec_t<2>(x), y(y) {}
+    class point2_t : public vec2_t {
+    public:
+        point2_t(double x, double y) : vec2_t(x,y) {}
     };
 
-    struct homogeneous_point2_t : public base_vec_t<3>
+    class homogeneous_point2_t
     {
-        // double x; // defined in base class
-        double y; 
-        double w; // w is inverse scale
+    public:
+        // Use union to permit specifying content by members x, y, w
+        union {
+            vec_t<3> vec;
+            struct { double x, y, w; };
+        };
 
         homogeneous_point2_t(double x, double y, double w = 1.0)
-            : base_vec_t<3>(x), y(y), w(w) {}
+        {
+            // initialize in body to avoid warnings about initializer list
+            this->x = x; this->y = y; this->w = w;
+        }
 
         // point2 => homogeneous_point2 is cheap;
         // the reverse is not.
-        homogeneous_point2_t(const point2_t& p) 
-            : base_vec_t<3>(p.x), y(p.y), w(1.0) {}
+        homogeneous_point2_t(const point2_t& p)
+        {
+            // initialize in body to avoid warnings about initializer list
+            this->x = p.x; this->y = p.y; this->w = 1.0;
+        }
 
         // TODO - is it possible to make this explicit?
         // perhaps with an intermediate class with a type conversion...
@@ -124,29 +168,50 @@ namespace cmbcv {
         // line through two points
         line2_t line(const homogeneous_point2_t& rhs) const;
 
+        unsigned int size() const {return asVec3().size();}
+
+        double& operator[](int ix) {return asVec3()[ix];}
+
+        const double& operator[](int ix) const {return asVec3()[ix];}
+
+        bool operator!=(const homogeneous_point2_t& rhs) const {
+            return asVec3() != rhs.asVec3();
+        }
+
+        bool operator==(const homogeneous_point2_t& rhs) const {
+            return asVec3() == rhs.asVec3();
+        }
+
+        std::ostream& print(std::ostream& os) const {
+            asVec3().print(os);
+            return os;
+        }
+
+    protected:
         const vec3_t& asVec3() const {
             return reinterpret_cast<const vec3_t&>(*this);
         }
+
+        vec3_t& asVec3() {
+            return reinterpret_cast<vec3_t&>(*this);
+        }
     };
 
-    struct line2_t {
-        // equation of the line ax + bx + c = 0
-        double a;
-        double b;
-        double c;
+    class line2_t {
+    public:
+        union {
+            vec_t<3> vec;
+            // equation of the line ax + by + c = 0
+            struct { double a, b, c; };
+        };
 
-        line2_t(double a, double b, double c) : a(a), b(b), c(c) {}
+        line2_t(double a, double b, double c)
+        {
+            this->a = a; this->b = b; this->c = c;
+        }
 
-        double& operator[](int ix) {
-            assert(ix >= 0);
-            assert(ix <= 2);
-            return (&a)[ix];
-        }
-        const double& operator[](int ix) const {
-            assert(ix >= 0);
-            assert(ix <= 2);
-            return (&a)[ix];
-        }
+        double& operator[](int ix) {return asVec3()[ix];}
+        const double& operator[](int ix) const {return asVec3()[ix];}
 
         homogeneous_point2_t intersection(const line2_t& rhs) const {
             // abuse vec3 cross product to get answer
@@ -157,8 +222,13 @@ namespace cmbcv {
             return answer;
         }
 
+    protected:
         const vec3_t& asVec3() const {
             return reinterpret_cast<const vec3_t&>(*this);
+        }
+
+        vec3_t& asVec3() {
+            return reinterpret_cast<vec3_t&>(*this);
         }
     };
 

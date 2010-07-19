@@ -7,12 +7,102 @@
 namespace bp = boost::python;
 
 BOOST_PYTHON_MODULE(cmbcv){
+    { //::cmbcv::base_vec_t< 2u >
+        typedef bp::class_< cmbcv::base_vec_t< 2u > > base_vec_t_less__2u__greater__exposer_t;
+        base_vec_t_less__2u__greater__exposer_t base_vec_t_less__2u__greater__exposer = base_vec_t_less__2u__greater__exposer_t( "base_vec_t_less__2u__greater_", bp::init< >() );
+        bp::scope base_vec_t_less__2u__greater__scope( base_vec_t_less__2u__greater__exposer );
+        base_vec_t_less__2u__greater__exposer.def_readwrite( "a", &cmbcv::base_vec_t< 2u >::a );
+        base_vec_t_less__2u__greater__exposer.def_readwrite( "x", &cmbcv::base_vec_t< 2u >::x );
+        base_vec_t_less__2u__greater__exposer.def( bp::init< double >(( bp::arg("x") )) );
+        bp::implicitly_convertible< double, cmbcv::base_vec_t< 2u > >();
+        base_vec_t_less__2u__greater__exposer.def( bp::self != bp::self );
+        base_vec_t_less__2u__greater__exposer.def( bp::self == bp::self );
+        { //::cmbcv::base_vec_t< 2u >::operator[]
+        
+            typedef cmbcv::base_vec_t< 2u > exported_class_t;
+            typedef double const & ( exported_class_t::*__getitem___function_type )( int ) const;
+            
+            base_vec_t_less__2u__greater__exposer.def( 
+                "__getitem__"
+                , __getitem___function_type( &::cmbcv::base_vec_t< 2u >::operator[] )
+                , ( bp::arg("ix") )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::cmbcv::base_vec_t< 2u >::operator[]
+        
+            typedef cmbcv::base_vec_t< 2u > exported_class_t;
+            typedef double & ( exported_class_t::*__getitem___function_type )( int ) ;
+            
+            base_vec_t_less__2u__greater__exposer.def( 
+                "__getitem__"
+                , __getitem___function_type( &::cmbcv::base_vec_t< 2u >::operator[] )
+                , ( bp::arg("ix") )
+                , bp::return_value_policy< bp::copy_non_const_reference >() );
+        
+        }
+        { //::cmbcv::base_vec_t< 2u >::size
+        
+            typedef cmbcv::base_vec_t< 2u > exported_class_t;
+            typedef unsigned int ( exported_class_t::*size_function_type )(  ) const;
+            
+            base_vec_t_less__2u__greater__exposer.def( 
+                "size"
+                , size_function_type( &::cmbcv::base_vec_t< 2u >::size ) );
+        
+        }
+    }
+
+    { //::cmbcv::base_vec_t< 3u >
+        typedef bp::class_< cmbcv::base_vec_t< 3u > > base_vec_t_less__3u__greater__exposer_t;
+        base_vec_t_less__3u__greater__exposer_t base_vec_t_less__3u__greater__exposer = base_vec_t_less__3u__greater__exposer_t( "base_vec_t_less__3u__greater_", bp::init< >() );
+        bp::scope base_vec_t_less__3u__greater__scope( base_vec_t_less__3u__greater__exposer );
+        base_vec_t_less__3u__greater__exposer.def_readwrite( "a", &cmbcv::base_vec_t< 3u >::a );
+        base_vec_t_less__3u__greater__exposer.def_readwrite( "x", &cmbcv::base_vec_t< 3u >::x );
+        base_vec_t_less__3u__greater__exposer.def( bp::init< double >(( bp::arg("x") )) );
+        bp::implicitly_convertible< double, cmbcv::base_vec_t< 3u > >();
+        base_vec_t_less__3u__greater__exposer.def( bp::self != bp::self );
+        base_vec_t_less__3u__greater__exposer.def( bp::self == bp::self );
+        { //::cmbcv::base_vec_t< 3u >::operator[]
+        
+            typedef cmbcv::base_vec_t< 3u > exported_class_t;
+            typedef double const & ( exported_class_t::*__getitem___function_type )( int ) const;
+            
+            base_vec_t_less__3u__greater__exposer.def( 
+                "__getitem__"
+                , __getitem___function_type( &::cmbcv::base_vec_t< 3u >::operator[] )
+                , ( bp::arg("ix") )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::cmbcv::base_vec_t< 3u >::operator[]
+        
+            typedef cmbcv::base_vec_t< 3u > exported_class_t;
+            typedef double & ( exported_class_t::*__getitem___function_type )( int ) ;
+            
+            base_vec_t_less__3u__greater__exposer.def( 
+                "__getitem__"
+                , __getitem___function_type( &::cmbcv::base_vec_t< 3u >::operator[] )
+                , ( bp::arg("ix") )
+                , bp::return_value_policy< bp::copy_non_const_reference >() );
+        
+        }
+        { //::cmbcv::base_vec_t< 3u >::size
+        
+            typedef cmbcv::base_vec_t< 3u > exported_class_t;
+            typedef unsigned int ( exported_class_t::*size_function_type )(  ) const;
+            
+            base_vec_t_less__3u__greater__exposer.def( 
+                "size"
+                , size_function_type( &::cmbcv::base_vec_t< 3u >::size ) );
+        
+        }
+    }
+
     { //::cmbcv::homogeneous_point2_t
-        typedef bp::class_< cmbcv::homogeneous_point2_t > homogeneous_point2_t_exposer_t;
-        homogeneous_point2_t_exposer_t homogeneous_point2_t_exposer = homogeneous_point2_t_exposer_t( "homogeneous_point2_t", bp::init< >() );
+        typedef bp::class_< cmbcv::homogeneous_point2_t, bp::bases< cmbcv::base_vec_t< 3u > > > homogeneous_point2_t_exposer_t;
+        homogeneous_point2_t_exposer_t homogeneous_point2_t_exposer = homogeneous_point2_t_exposer_t( "homogeneous_point2_t", bp::init< double, double, bp::optional< double > >(( bp::arg("x"), bp::arg("y"), bp::arg("w")=1.0e+0 )) );
         bp::scope homogeneous_point2_t_scope( homogeneous_point2_t_exposer );
-        homogeneous_point2_t_exposer.def( bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) );
-        homogeneous_point2_t_exposer.def( bp::init< double, double, double >(( bp::arg("x"), bp::arg("y"), bp::arg("w") )) );
         homogeneous_point2_t_exposer.def( bp::init< cmbcv::point2_t const & >(( bp::arg("p") )) );
         bp::implicitly_convertible< cmbcv::point2_t const &, cmbcv::homogeneous_point2_t >();
         { //::cmbcv::homogeneous_point2_t::asVec3
@@ -36,30 +126,7 @@ BOOST_PYTHON_MODULE(cmbcv){
         
         }
         homogeneous_point2_t_exposer.def( "as__scope_cmbcv_scope_point2_t", &cmbcv::homogeneous_point2_t::operator ::cmbcv::point2_t  );
-        { //::cmbcv::homogeneous_point2_t::operator[]
-        
-            typedef double & ( ::cmbcv::homogeneous_point2_t::*__getitem___function_type )( int ) ;
-            
-            homogeneous_point2_t_exposer.def( 
-                "__getitem__"
-                , __getitem___function_type( &::cmbcv::homogeneous_point2_t::operator[] )
-                , ( bp::arg("ix") )
-                , bp::return_value_policy< bp::copy_non_const_reference >() );
-        
-        }
-        { //::cmbcv::homogeneous_point2_t::operator[]
-        
-            typedef double const & ( ::cmbcv::homogeneous_point2_t::*__getitem___function_type )( int ) const;
-            
-            homogeneous_point2_t_exposer.def( 
-                "__getitem__"
-                , __getitem___function_type( &::cmbcv::homogeneous_point2_t::operator[] )
-                , ( bp::arg("ix") )
-                , bp::return_value_policy< bp::copy_const_reference >() );
-        
-        }
         homogeneous_point2_t_exposer.def_readwrite( "w", &cmbcv::homogeneous_point2_t::w );
-        homogeneous_point2_t_exposer.def_readwrite( "x", &cmbcv::homogeneous_point2_t::x );
         homogeneous_point2_t_exposer.def_readwrite( "y", &cmbcv::homogeneous_point2_t::y );
     }
 
@@ -88,39 +155,17 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def_readwrite( "b", &cmbcv::line2_t::b )    
         .def_readwrite( "c", &cmbcv::line2_t::c );
 
-    bp::class_< cmbcv::point2_t >( "point2_t", bp::init< >() )    
-        .def( bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) )    
-        .def( bp::self != bp::self )    
-        .def( bp::self == bp::self )    
-        .def( 
-            "__getitem__"
-            , (double & ( ::cmbcv::point2_t::* )( int ) )( &::cmbcv::point2_t::operator[] )
-            , ( bp::arg("ix") )
-            , bp::return_value_policy< bp::copy_non_const_reference >() )    
-        .def( 
-            "__getitem__"
-            , (double const & ( ::cmbcv::point2_t::* )( int ) const)( &::cmbcv::point2_t::operator[] )
-            , ( bp::arg("ix") )
-            , bp::return_value_policy< bp::copy_const_reference >() )    
-        .def_readwrite( "x", &cmbcv::point2_t::x )    
+    bp::class_< cmbcv::point2_t, bp::bases< cmbcv::base_vec_t< 2u > > >( "point2_t", bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) )    
         .def_readwrite( "y", &cmbcv::point2_t::y );
 
-    bp::class_< cmbcv::vec3_t >( "vec3_t", bp::init< double, double, double >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) )    
+    bp::class_< cmbcv::vec2_t, bp::bases< cmbcv::base_vec_t< 2u > > >( "vec2_t", bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) )    
+        .def_readwrite( "y", &cmbcv::vec2_t::y );
+
+    bp::class_< cmbcv::vec3_t, bp::bases< cmbcv::base_vec_t< 3u > > >( "vec3_t", bp::init< double, double, double >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) )    
         .def( 
             "cross"
             , (::cmbcv::vec3_t ( ::cmbcv::vec3_t::* )( ::cmbcv::vec3_t const & ) const)( &::cmbcv::vec3_t::cross )
             , ( bp::arg("rhs") ) )    
-        .def( 
-            "__getitem__"
-            , (double & ( ::cmbcv::vec3_t::* )( int ) )( &::cmbcv::vec3_t::operator[] )
-            , ( bp::arg("ix") )
-            , bp::return_value_policy< bp::copy_non_const_reference >() )    
-        .def( 
-            "__getitem__"
-            , (double const & ( ::cmbcv::vec3_t::* )( int ) const)( &::cmbcv::vec3_t::operator[] )
-            , ( bp::arg("ix") )
-            , bp::return_value_policy< bp::copy_const_reference >() )    
-        .def_readwrite( "x", &cmbcv::vec3_t::x )    
         .def_readwrite( "y", &cmbcv::vec3_t::y )    
         .def_readwrite( "z", &cmbcv::vec3_t::z );
 }

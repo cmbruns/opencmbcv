@@ -1,11 +1,11 @@
 import unittest
 import cmbcv
 
-class TestPoint2d(unittest.TestCase):
+class TestPoint2(unittest.TestCase):
     def setUp(self):
-        self.vec1 = cmbcv.point2d_t(5,2)
+        self.vec1 = cmbcv.point2_t(5,2)
 
-    def testPoint2d(self):
+    def testPoint2(self):
         v = self.vec1
         self.assertEqual(1+1, 2)
         self.assertEqual(v.x, 5)
@@ -31,11 +31,11 @@ class TestPoint2d(unittest.TestCase):
         self.assertEqual((1, 3), (1, 3))
         self.assertEqual(tuple([1, 3]), (1, 3))
         
-    def testPoint2dEquality(self):
+    def testPoint2Equality(self):
         v = self.vec1
         self.assertEqual(v, v)
-        v2 = cmbcv.point2d_t(5,2)
-        v3 = cmbcv.point2d_t(4,1)
+        v2 = cmbcv.point2_t(5,2)
+        v3 = cmbcv.point2_t(4,1)
         self.assertEqual(v.x, v2.x)
         self.assertEqual(v.y, v2.y)
         self.assertEqual(v, v2)

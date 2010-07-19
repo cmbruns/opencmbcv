@@ -30,7 +30,10 @@ get_filename_component(BOOST_LIB_ROOT "${Boost_PYTHON_LIBRARY_RELEASE}" NAME_WE)
 # Dynamically generate generate_bp_source.py at configuration time
 find_program(GCCXML_EXECUTABLE
     NAMES gccxml
-    PATHS "C:/Program Files/gccxml/bin")
+    PATHS 
+        "C:/Program Files/gccxml/bin"
+        "C:/Program Files/gccxml_sherm/bin"
+)
 set(GENERATE_SOURCE_PY "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.py")
 configure_file(generate_bp_source.py.in "${GENERATE_SOURCE_PY}" @ONLY)
 

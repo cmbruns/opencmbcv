@@ -9,7 +9,8 @@ namespace cmbcv {
     // "floats" in python are C++ doubles.  So use double.
     typedef double real_t;
 
-    // vec_t<int> class defines indexing, equality, and printing for use by other classes.
+    // vec_t<int> class defines indexing, equality, and printing for use 
+    // by other classes.
     // But reuse will be by containment, rather than inheritance.
     template<unsigned int DIM>
     class vec_t 
@@ -34,6 +35,9 @@ namespace cmbcv {
 
         bool operator!=(const vec_t& rhs) const {
             const vec_t& lhs = *this;
+            // There exist tricks to force the compiler to unroll these loops,
+            // but that's probably overkill at this point. 
+            //   (see SimTK Vec.h Impl:: namespace)
             for (unsigned int ix(0); ix < size(); ++ix)
                 if (lhs[ix] != rhs[ix]) return true;
             return false;

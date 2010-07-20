@@ -164,6 +164,12 @@ namespace cmbcv {
             return asVec3().print(os);
         }
 
+        // interconversion with vec3 to ease use of cross product for intersection
+        // Q: Is this constructor more expensive than a reinterpret cast?
+        // A: Probably not when called as the return value in a method.
+        explicit homogeneous_point2_t(const vec3_t& vec3) 
+            : x(vec3.x), y(vec3.y), w(vec3.z) {}
+
     protected:
         const vec3_t& asVec3() const {
             return reinterpret_cast<const vec3_t&>(*this);
@@ -209,15 +215,16 @@ namespace cmbcv {
             const line2_t& lhs = *this;
             // abuse vec3 cross product to get answer
             vec3_t v = lhs.asVec3().cross(rhs.asVec3());
-            return reinterpret_cast<homogeneous_point2_t&>(v);
+            return homogeneous_point2_t(v);
         }
 
-    protected:
         // interconversion with vec3 to ease use of cross product for intersection
-        // is this constructor more expensive than a reinterpret cast?
-        line2_t(const vec3_t& vec3) 
+        // Q: Is this constructor more expensive than a reinterpret cast?
+        // A: Probably not when called as the return value in a method.
+        explicit line2_t(const vec3_t& vec3) 
             : a(vec3.x), b(vec3.y), c(vec3.z) {}
 
+    protected:
         const vec3_t& asVec3() const {
             return reinterpret_cast<const vec3_t&>(*this);
         }

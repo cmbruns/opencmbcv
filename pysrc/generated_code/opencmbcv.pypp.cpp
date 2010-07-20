@@ -22,6 +22,13 @@ struct homogeneous_point2_t_wrapper : cmbcv::homogeneous_point2_t, bp::wrapper< 
     
     }
 
+    homogeneous_point2_t_wrapper(::cmbcv::vec3_t const & vec3 )
+    : cmbcv::homogeneous_point2_t( boost::ref(vec3) )
+      , bp::wrapper< cmbcv::homogeneous_point2_t >(){
+        // constructor
+    
+    }
+
     ::cmbcv::vec3_t const & asVec3(  ) const {
         return cmbcv::homogeneous_point2_t::asVec3(  );
     }
@@ -71,6 +78,7 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def_readwrite( "x", &cmbcv::homogeneous_point2_t::x )    
         .def_readwrite( "y", &cmbcv::homogeneous_point2_t::y )    
         .def_readwrite( "vec", &cmbcv::homogeneous_point2_t::vec )    
+        .def( bp::init< cmbcv::vec3_t const & >(( bp::arg("vec3") )) )    
         .def( 
             "asVec3"
             , (::cmbcv::vec3_t const & ( homogeneous_point2_t_wrapper::* )(  ) const)(&homogeneous_point2_t_wrapper::asVec3)
@@ -148,14 +156,9 @@ BOOST_PYTHON_MODULE(cmbcv){
             "size"
             , (unsigned int ( ::cmbcv::vec2_t::* )(  ) const)( &::cmbcv::vec2_t::size ) );
 
-    { //::cmbcv::point2_t
-        typedef bp::class_< cmbcv::point2_t, bp::bases< cmbcv::vec2_t > > point2_t_exposer_t;
-        point2_t_exposer_t point2_t_exposer = point2_t_exposer_t( "point2_t", bp::init< cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y") )) );
-        bp::scope point2_t_scope( point2_t_exposer );
-        point2_t_exposer.def( bp::init< cmbcv::homogeneous_point2_t const & >(( bp::arg("hp") )) );
-        bp::implicitly_convertible< cmbcv::homogeneous_point2_t const &, cmbcv::point2_t >();
-        point2_t_exposer.def( "as__scope_cmbcv_scope_homogeneous_point2_t", &cmbcv::point2_t::operator ::cmbcv::homogeneous_point2_t  );
-    }
+    bp::class_< cmbcv::point2_t, bp::bases< cmbcv::vec2_t > >( "point2_t", bp::init< cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y") )) )    
+        .def( bp::init< cmbcv::homogeneous_point2_t const & >(( bp::arg("hp") )) )    
+        .def( "as__scope_cmbcv_scope_homogeneous_point2_t", &cmbcv::point2_t::operator ::cmbcv::homogeneous_point2_t  );
 
     bp::implicitly_convertible< cmbcv::point2_t, cmbcv::homogeneous_point2_t >();
 

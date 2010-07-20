@@ -6,8 +6,6 @@ Things To Do:
         [ ] lists vs lists
         [ ] tuples vs tuples
         [ ] point2ds vs point2ds
-        [ ] lists vs point2ds
-        [ ] tuples vs point2ds
-
+        
         Note: == and != do not work as expected between tuples and lists, so no testing of tuples vs. lists will be performed.
         

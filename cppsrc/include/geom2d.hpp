@@ -1,6 +1,9 @@
 #include <cassert>
 #include <iostream>
 
+// These classes are intended to be wrapped using boost.python,
+// with an efficient C++ API and a nearly syntactically identical python API
+
 namespace cmbcv {
 
     // "floats" in python are C++ doubles.  So use double.

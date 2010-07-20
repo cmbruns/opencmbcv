@@ -15,15 +15,8 @@ struct homogeneous_point2_t_wrapper : cmbcv::homogeneous_point2_t, bp::wrapper< 
         
     }
 
-    homogeneous_point2_t_wrapper(double x, double y, double w=1.0e+0 )
+    homogeneous_point2_t_wrapper(::cmbcv::real_t x, ::cmbcv::real_t y, ::cmbcv::real_t w=1.0e+0 )
     : cmbcv::homogeneous_point2_t( x, y, w )
-      , bp::wrapper< cmbcv::homogeneous_point2_t >(){
-        // constructor
-    
-    }
-
-    homogeneous_point2_t_wrapper(::cmbcv::point2_t const & p )
-    : cmbcv::homogeneous_point2_t( boost::ref(p) )
       , bp::wrapper< cmbcv::homogeneous_point2_t >(){
         // constructor
     
@@ -48,8 +41,15 @@ struct line2_t_wrapper : cmbcv::line2_t, bp::wrapper< cmbcv::line2_t > {
         
     }
 
-    line2_t_wrapper(double a, double b, double c )
+    line2_t_wrapper(::cmbcv::real_t a, ::cmbcv::real_t b, ::cmbcv::real_t c )
     : cmbcv::line2_t( a, b, c )
+      , bp::wrapper< cmbcv::line2_t >(){
+        // constructor
+    
+    }
+
+    line2_t_wrapper(::cmbcv::vec3_t const & vec3 )
+    : cmbcv::line2_t( boost::ref(vec3) )
       , bp::wrapper< cmbcv::line2_t >(){
         // constructor
     
@@ -66,89 +66,45 @@ struct line2_t_wrapper : cmbcv::line2_t, bp::wrapper< cmbcv::line2_t > {
 };
 
 BOOST_PYTHON_MODULE(cmbcv){
-    { //::cmbcv::homogeneous_point2_t
-        typedef bp::class_< homogeneous_point2_t_wrapper > homogeneous_point2_t_exposer_t;
-        homogeneous_point2_t_exposer_t homogeneous_point2_t_exposer = homogeneous_point2_t_exposer_t( "homogeneous_point2_t", bp::init< double, double, bp::optional< double > >(( bp::arg("x"), bp::arg("y"), bp::arg("w")=1.0e+0 )) );
-        bp::scope homogeneous_point2_t_scope( homogeneous_point2_t_exposer );
-        homogeneous_point2_t_exposer.def_readwrite( "w", &cmbcv::homogeneous_point2_t::w );
-        homogeneous_point2_t_exposer.def_readwrite( "x", &cmbcv::homogeneous_point2_t::x );
-        homogeneous_point2_t_exposer.def_readwrite( "y", &cmbcv::homogeneous_point2_t::y );
-        homogeneous_point2_t_exposer.def_readwrite( "vec", &cmbcv::homogeneous_point2_t::vec );
-        homogeneous_point2_t_exposer.def( bp::init< cmbcv::point2_t const & >(( bp::arg("p") )) );
-        bp::implicitly_convertible< cmbcv::point2_t const &, cmbcv::homogeneous_point2_t >();
-        { //::cmbcv::homogeneous_point2_t::asVec3
-        
-            typedef ::cmbcv::vec3_t const & ( homogeneous_point2_t_wrapper::*asVec3_function_type )(  ) const;
-            
-            homogeneous_point2_t_exposer.def( 
-                "asVec3"
-                , asVec3_function_type( &homogeneous_point2_t_wrapper::asVec3 )
-                , bp::return_internal_reference< >() );
-        
-        }
-        { //::cmbcv::homogeneous_point2_t::asVec3
-        
-            typedef ::cmbcv::vec3_t & ( homogeneous_point2_t_wrapper::*asVec3_function_type )(  ) ;
-            
-            homogeneous_point2_t_exposer.def( 
-                "asVec3"
-                , asVec3_function_type( &homogeneous_point2_t_wrapper::asVec3 )
-                , bp::return_internal_reference< >() );
-        
-        }
-        { //::cmbcv::homogeneous_point2_t::line
-        
-            typedef ::cmbcv::line2_t ( ::cmbcv::homogeneous_point2_t::*line_function_type )( ::cmbcv::homogeneous_point2_t const & ) const;
-            
-            homogeneous_point2_t_exposer.def( 
-                "line"
-                , line_function_type( &::cmbcv::homogeneous_point2_t::line )
-                , ( bp::arg("rhs") ) );
-        
-        }
-        homogeneous_point2_t_exposer.def( "as__scope_cmbcv_scope_point2_t", &cmbcv::homogeneous_point2_t::operator ::cmbcv::point2_t  );
-        homogeneous_point2_t_exposer.def( bp::self != bp::self );
-        homogeneous_point2_t_exposer.def( bp::self == bp::self );
-        { //::cmbcv::homogeneous_point2_t::operator[]
-        
-            typedef double & ( ::cmbcv::homogeneous_point2_t::*__getitem___function_type )( int ) ;
-            
-            homogeneous_point2_t_exposer.def( 
-                "__getitem__"
-                , __getitem___function_type( &::cmbcv::homogeneous_point2_t::operator[] )
-                , ( bp::arg("ix") )
-                , bp::return_value_policy< bp::copy_non_const_reference >() );
-        
-        }
-        { //::cmbcv::homogeneous_point2_t::operator[]
-        
-            typedef double const & ( ::cmbcv::homogeneous_point2_t::*__getitem___function_type )( int ) const;
-            
-            homogeneous_point2_t_exposer.def( 
-                "__getitem__"
-                , __getitem___function_type( &::cmbcv::homogeneous_point2_t::operator[] )
-                , ( bp::arg("ix") )
-                , bp::return_value_policy< bp::copy_const_reference >() );
-        
-        }
-        { //::cmbcv::homogeneous_point2_t::size
-        
-            typedef unsigned int ( ::cmbcv::homogeneous_point2_t::*size_function_type )(  ) const;
-            
-            homogeneous_point2_t_exposer.def( 
-                "size"
-                , size_function_type( &::cmbcv::homogeneous_point2_t::size ) );
-        
-        }
-    }
+    bp::class_< homogeneous_point2_t_wrapper >( "homogeneous_point2_t", bp::init< cmbcv::real_t, cmbcv::real_t, bp::optional< cmbcv::real_t > >(( bp::arg("x"), bp::arg("y"), bp::arg("w")=1.0e+0 )) )    
+        .def_readwrite( "w", &cmbcv::homogeneous_point2_t::w )    
+        .def_readwrite( "x", &cmbcv::homogeneous_point2_t::x )    
+        .def_readwrite( "y", &cmbcv::homogeneous_point2_t::y )    
+        .def_readwrite( "vec", &cmbcv::homogeneous_point2_t::vec )    
+        .def( 
+            "asVec3"
+            , (::cmbcv::vec3_t const & ( homogeneous_point2_t_wrapper::* )(  ) const)(&homogeneous_point2_t_wrapper::asVec3)
+            , bp::return_internal_reference< >() )    
+        .def( 
+            "asVec3"
+            , (::cmbcv::vec3_t & ( homogeneous_point2_t_wrapper::* )(  ) )(&homogeneous_point2_t_wrapper::asVec3)
+            , bp::return_internal_reference< >() )    
+        .def( 
+            "line"
+            , (::cmbcv::line2_t ( ::cmbcv::homogeneous_point2_t::* )( ::cmbcv::homogeneous_point2_t const & ) const)( &::cmbcv::homogeneous_point2_t::line )
+            , ( bp::arg("rhs") ) )    
+        .def( bp::self != bp::self )    
+        .def( bp::self == bp::self )    
+        .def( 
+            "__getitem__"
+            , (::cmbcv::real_t & ( ::cmbcv::homogeneous_point2_t::* )( int ) )( &::cmbcv::homogeneous_point2_t::operator[] )
+            , ( bp::arg("ix") )
+            , bp::return_value_policy< bp::copy_non_const_reference >() )    
+        .def( 
+            "__getitem__"
+            , (::cmbcv::real_t const & ( ::cmbcv::homogeneous_point2_t::* )( int ) const)( &::cmbcv::homogeneous_point2_t::operator[] )
+            , ( bp::arg("ix") )
+            , bp::return_value_policy< bp::copy_const_reference >() )    
+        .def( 
+            "size"
+            , (unsigned int ( ::cmbcv::homogeneous_point2_t::* )(  ) const)( &::cmbcv::homogeneous_point2_t::size ) );
 
-    bp::implicitly_convertible< cmbcv::homogeneous_point2_t, cmbcv::point2_t >();
-
-    bp::class_< line2_t_wrapper >( "line2_t", bp::init< double, double, double >(( bp::arg("a"), bp::arg("b"), bp::arg("c") )) )    
+    bp::class_< line2_t_wrapper >( "line2_t", bp::init< cmbcv::real_t, cmbcv::real_t, cmbcv::real_t >(( bp::arg("a"), bp::arg("b"), bp::arg("c") )) )    
         .def_readwrite( "a", &cmbcv::line2_t::a )    
         .def_readwrite( "b", &cmbcv::line2_t::b )    
         .def_readwrite( "c", &cmbcv::line2_t::c )    
         .def_readwrite( "vec", &cmbcv::line2_t::vec )    
+        .def( bp::init< cmbcv::vec3_t const & >(( bp::arg("vec3") )) )    
         .def( 
             "asVec3"
             , (::cmbcv::vec3_t const & ( line2_t_wrapper::* )(  ) const)(&line2_t_wrapper::asVec3)
@@ -163,16 +119,16 @@ BOOST_PYTHON_MODULE(cmbcv){
             , ( bp::arg("rhs") ) )    
         .def( 
             "__getitem__"
-            , (double & ( ::cmbcv::line2_t::* )( int ) )( &::cmbcv::line2_t::operator[] )
+            , (::cmbcv::real_t & ( ::cmbcv::line2_t::* )( int ) )( &::cmbcv::line2_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_non_const_reference >() )    
         .def( 
             "__getitem__"
-            , (double const & ( ::cmbcv::line2_t::* )( int ) const)( &::cmbcv::line2_t::operator[] )
+            , (::cmbcv::real_t const & ( ::cmbcv::line2_t::* )( int ) const)( &::cmbcv::line2_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_const_reference >() );
 
-    bp::class_< cmbcv::vec2_t >( "vec2_t", bp::init< double, double >(( bp::arg("xx"), bp::arg("yy") )) )    
+    bp::class_< cmbcv::vec2_t >( "vec2_t", bp::init< cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y") )) )    
         .def_readwrite( "x", &cmbcv::vec2_t::x )    
         .def_readwrite( "y", &cmbcv::vec2_t::y )    
         .def_readwrite( "vec", &cmbcv::vec2_t::vec )    
@@ -180,21 +136,30 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def( bp::self == bp::self )    
         .def( 
             "__getitem__"
-            , (double & ( ::cmbcv::vec2_t::* )( int ) )( &::cmbcv::vec2_t::operator[] )
+            , (::cmbcv::real_t & ( ::cmbcv::vec2_t::* )( int ) )( &::cmbcv::vec2_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_non_const_reference >() )    
         .def( 
             "__getitem__"
-            , (double const & ( ::cmbcv::vec2_t::* )( int ) const)( &::cmbcv::vec2_t::operator[] )
+            , (::cmbcv::real_t const & ( ::cmbcv::vec2_t::* )( int ) const)( &::cmbcv::vec2_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_const_reference >() )    
         .def( 
             "size"
             , (unsigned int ( ::cmbcv::vec2_t::* )(  ) const)( &::cmbcv::vec2_t::size ) );
 
-    bp::class_< cmbcv::point2_t, bp::bases< cmbcv::vec2_t > >( "point2_t", bp::init< double, double >(( bp::arg("x"), bp::arg("y") )) );
+    { //::cmbcv::point2_t
+        typedef bp::class_< cmbcv::point2_t, bp::bases< cmbcv::vec2_t > > point2_t_exposer_t;
+        point2_t_exposer_t point2_t_exposer = point2_t_exposer_t( "point2_t", bp::init< cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y") )) );
+        bp::scope point2_t_scope( point2_t_exposer );
+        point2_t_exposer.def( bp::init< cmbcv::homogeneous_point2_t const & >(( bp::arg("hp") )) );
+        bp::implicitly_convertible< cmbcv::homogeneous_point2_t const &, cmbcv::point2_t >();
+        point2_t_exposer.def( "as__scope_cmbcv_scope_homogeneous_point2_t", &cmbcv::point2_t::operator ::cmbcv::homogeneous_point2_t  );
+    }
 
-    bp::class_< cmbcv::vec3_t >( "vec3_t", bp::init< double, double, double >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) )    
+    bp::implicitly_convertible< cmbcv::point2_t, cmbcv::homogeneous_point2_t >();
+
+    bp::class_< cmbcv::vec3_t >( "vec3_t", bp::init< cmbcv::real_t, cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) )    
         .def_readwrite( "x", &cmbcv::vec3_t::x )    
         .def_readwrite( "y", &cmbcv::vec3_t::y )    
         .def_readwrite( "z", &cmbcv::vec3_t::z )    
@@ -207,12 +172,12 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def( bp::self == bp::self )    
         .def( 
             "__getitem__"
-            , (double & ( ::cmbcv::vec3_t::* )( int ) )( &::cmbcv::vec3_t::operator[] )
+            , (::cmbcv::real_t & ( ::cmbcv::vec3_t::* )( int ) )( &::cmbcv::vec3_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_non_const_reference >() )    
         .def( 
             "__getitem__"
-            , (double const & ( ::cmbcv::vec3_t::* )( int ) const)( &::cmbcv::vec3_t::operator[] )
+            , (::cmbcv::real_t const & ( ::cmbcv::vec3_t::* )( int ) const)( &::cmbcv::vec3_t::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_const_reference >() )    
         .def( 
@@ -224,12 +189,12 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def( bp::self == bp::self )    
         .def( 
             "__getitem__"
-            , (double const & ( ::cmbcv::vec_t<2u>::* )( int ) const)( &::cmbcv::vec_t< 2u >::operator[] )
+            , (::cmbcv::real_t const & ( ::cmbcv::vec_t<2u>::* )( int ) const)( &::cmbcv::vec_t< 2u >::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_const_reference >() )    
         .def( 
             "__getitem__"
-            , (double & ( ::cmbcv::vec_t<2u>::* )( int ) )( &::cmbcv::vec_t< 2u >::operator[] )
+            , (::cmbcv::real_t & ( ::cmbcv::vec_t<2u>::* )( int ) )( &::cmbcv::vec_t< 2u >::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_non_const_reference >() )    
         .def( 
@@ -241,12 +206,12 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def( bp::self == bp::self )    
         .def( 
             "__getitem__"
-            , (double const & ( ::cmbcv::vec_t<3u>::* )( int ) const)( &::cmbcv::vec_t< 3u >::operator[] )
+            , (::cmbcv::real_t const & ( ::cmbcv::vec_t<3u>::* )( int ) const)( &::cmbcv::vec_t< 3u >::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_const_reference >() )    
         .def( 
             "__getitem__"
-            , (double & ( ::cmbcv::vec_t<3u>::* )( int ) )( &::cmbcv::vec_t< 3u >::operator[] )
+            , (::cmbcv::real_t & ( ::cmbcv::vec_t<3u>::* )( int ) )( &::cmbcv::vec_t< 3u >::operator[] )
             , ( bp::arg("ix") )
             , bp::return_value_policy< bp::copy_non_const_reference >() )    
         .def( 

@@ -3,24 +3,27 @@
 
 namespace cmbcv {
 
+    // "floats" in python are C++ doubles.  So use double.
+    typedef double real_t;
+
     // vec_t<int> class defines indexing, equality, and printing for use by other classes.
     // But reuse will be by containment, rather than inheritance.
     template<unsigned int DIM>
     class vec_t 
     {
     protected:
-        double data[DIM];
+        real_t data[DIM];
 
     public:
         unsigned int size() const {return DIM;}
 
-        const double& operator[](int ix) const {
+        const real_t& operator[](int ix) const {
             assert(ix >= 0);
             assert(ix < DIM);
             return data[ix];
         }
         
-        double& operator[](int ix) {
+        real_t& operator[](int ix) {
             assert(ix >= 0);
             assert(ix < DIM);
             return data[ix];
@@ -57,19 +60,16 @@ namespace cmbcv {
         // Use union to permit specifying content by members x, y
         union {
             vec_t<2> vec;
-            struct { double x, y; };
+            struct { real_t x, y; };
         };
 
-        vec2_t(double xx, double yy) {
-            // initialize in body to avoid warnings about initializer list
-            x = xx; y = yy;
-        }
+        vec2_t(real_t x, real_t y) : x(x), y(y) {}
 
         unsigned int size() const {return vec.size();}
 
-        double& operator[](int ix) {return vec[ix];}
+        real_t& operator[](int ix) {return vec[ix];}
 
-        const double& operator[](int ix) const {return vec[ix];}
+        const real_t& operator[](int ix) const {return vec[ix];}
 
         bool operator!=(const vec2_t& rhs) const {
             return this->vec != rhs.vec;
@@ -80,8 +80,7 @@ namespace cmbcv {
         }
 
         std::ostream& print(std::ostream& os) const {
-            vec.print(os);
-            return os;
+            return vec.print(os);
         }
     };
 
@@ -91,19 +90,16 @@ namespace cmbcv {
         // Use union to permit specifying content by members x, y, z
         union {
             vec_t<3> vec;
-            struct { double x, y, z; };
+            struct { real_t x, y, z; };
         };
 
-        vec3_t(double x, double y, double z) {
-            // initialize in body to avoid warnings about initializer list
-            this->x = x; this->y = y; this->z = z;
-        }
+        vec3_t(real_t x, real_t y, real_t z) : x(x), y(y), z(z) {}
 
         unsigned int size() const {return vec.size();}
 
-        double& operator[](int ix) {return vec[ix];}
+        real_t& operator[](int ix) {return vec[ix];}
 
-        const double& operator[](int ix) const {return vec[ix];}
+        const real_t& operator[](int ix) const {return vec[ix];}
 
         bool operator!=(const vec3_t& rhs) const {
             return this->vec != rhs.vec;
@@ -114,8 +110,7 @@ namespace cmbcv {
         }
 
         std::ostream& print(std::ostream& os) const {
-            vec.print(os);
-            return os;
+            return vec.print(os);
         }
 
         vec3_t cross(const vec3_t& rhs) const {
@@ -127,52 +122,32 @@ namespace cmbcv {
         }
     };
 
-    // forward declarations
-    class homogeneous_point2_t;
+    // forward declaration
     class line2_t;
 
-    // point2_t describes pixel coordinates in an image.
-    // point2_t represents a column vector.
-    class point2_t : public vec2_t {
-    public:
-        point2_t(double x, double y) : vec2_t(x,y) {}
-    };
-
+    // define homogeneous_point2_t before point2_t to ease making conversion
+    //   homogeneous_point2_t => point2_t explicit (expensive), but
+    //   point2_t => homogeneous_point2_t implicit (cheap)
     class homogeneous_point2_t
     {
     public:
         // Use union to permit specifying content by members x, y, w
         union {
             vec_t<3> vec;
-            struct { double x, y, w; };
+            struct { real_t x, y, w; };
         };
 
-        homogeneous_point2_t(double x, double y, double w = 1.0)
-        {
-            // initialize in body to avoid warnings about initializer list
-            this->x = x; this->y = y; this->w = w;
-        }
-
-        // point2 => homogeneous_point2 is cheap;
-        // the reverse is not.
-        homogeneous_point2_t(const point2_t& p)
-        {
-            // initialize in body to avoid warnings about initializer list
-            this->x = p.x; this->y = p.y; this->w = 1.0;
-        }
-
-        // TODO - is it possible to make this explicit?
-        // perhaps with an intermediate class with a type conversion...
-        operator point2_t() const {return point2_t(x/w, y/w);}
+        homogeneous_point2_t(real_t x, real_t y, real_t w = 1.0)
+            : x(x), y(y), w(w) {}
 
         // line through two points
         line2_t line(const homogeneous_point2_t& rhs) const;
 
         unsigned int size() const {return asVec3().size();}
 
-        double& operator[](int ix) {return asVec3()[ix];}
+        real_t& operator[](int ix) {return asVec3()[ix];}
 
-        const double& operator[](int ix) const {return asVec3()[ix];}
+        const real_t& operator[](int ix) const {return asVec3()[ix];}
 
         bool operator!=(const homogeneous_point2_t& rhs) const {
             return asVec3() != rhs.asVec3();
@@ -183,8 +158,7 @@ namespace cmbcv {
         }
 
         std::ostream& print(std::ostream& os) const {
-            asVec3().print(os);
-            return os;
+            return asVec3().print(os);
         }
 
     protected:
@@ -197,32 +171,50 @@ namespace cmbcv {
         }
     };
 
+    // point2_t describes pixel coordinates in an image.
+    // point2_t represents a column vector.
+    class point2_t : public vec2_t {
+    public:
+        point2_t(real_t x, real_t y) : vec2_t(x,y) {}
+
+        // point2 => homogeneous_point2 is cheap;
+        // the reverse is not.
+        explicit point2_t(const homogeneous_point2_t& hp) 
+            : vec2_t(hp.x/hp.w, hp.y/hp.w) {}
+
+        // implicit conversion to homogeneous_point2_t is cheap
+        operator homogeneous_point2_t() const {
+            return homogeneous_point2_t(x, y, 1.0);
+        }
+    };
+
     class line2_t {
     public:
         union {
             vec_t<3> vec;
             // equation of the line ax + by + c = 0
-            struct { double a, b, c; };
+            struct { real_t a, b, c; };
         };
 
-        line2_t(double a, double b, double c)
-        {
-            this->a = a; this->b = b; this->c = c;
-        }
+        line2_t(real_t a, real_t b, real_t c)
+            : a(a), b(b), c(c) {}
 
-        double& operator[](int ix) {return asVec3()[ix];}
-        const double& operator[](int ix) const {return asVec3()[ix];}
+        real_t& operator[](int ix) {return asVec3()[ix];}
+        const real_t& operator[](int ix) const {return asVec3()[ix];}
 
         homogeneous_point2_t intersection(const line2_t& rhs) const {
+            const line2_t& lhs = *this;
             // abuse vec3 cross product to get answer
-            const vec3_t& l = (const vec3_t&)(*this);
-            const vec3_t& r = (const vec3_t&)(rhs);
-            vec3_t v = l.cross(r);
-            homogeneous_point2_t& answer = (homogeneous_point2_t&)(v);
-            return answer;
+            vec3_t v = lhs.asVec3().cross(rhs.asVec3());
+            return reinterpret_cast<homogeneous_point2_t&>(v);
         }
 
     protected:
+        // interconversion with vec3 to ease use of cross product for intersection
+        // is this constructor more expensive than a reinterpret cast?
+        line2_t(const vec3_t& vec3) 
+            : a(vec3.x), b(vec3.y), c(vec3.z) {}
+
         const vec3_t& asVec3() const {
             return reinterpret_cast<const vec3_t&>(*this);
         }

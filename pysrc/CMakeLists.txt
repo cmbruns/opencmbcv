@@ -62,7 +62,6 @@ add_custom_target(GenerateBoostPythonSources
         OpenCmbCv
     SOURCES
         generate_bp_source.py.in
-        "${GENERATE_SOURCE_PY}"
 )
 
 # Build binary cmbcv module
@@ -101,7 +100,6 @@ add_custom_target(BuildPyModule
     COMMENT "Building binary python cmbcv module"
     SOURCES 
         setup.py.in
-        "${PY_STAGING_DIR}/setup.py"
         ${ALL_SRCS}
 )
 
@@ -147,7 +145,7 @@ if(CMBCV_DO_TESTING)
         WORKING_DIRECTORY "${PY_STAGING_DIR}"
         COMMENT "Installing python cmbcv module to local directory ${NATIVE_PY_TEST_INSTALL_DIR}"
         SOURCES
-            "${PY_STAGING_DIR}/setup.py"
+            setup.py.in
     )
     add_dependencies(InstallPyModuleLocally BuildPyModule)
     add_subdirectory(tests)

@@ -15,7 +15,9 @@ mb = module_builder.module_builder_t(
     define_symbols=["_HAS_TR1=0"])
 
 mb.free_operators().exclude()
-mb.class_('point2d_t').member_function('print').exclude()
+mb.member_functions('print').exclude()
+for fn in mb.member_functions('asVec3'):
+    fn.call_policies = return_internal_reference()
 
 mb.build_code_creator(module_name='cmbcv')
 mb.write_module(os.path.join('generated_code', 'opencmbcv.pypp.cpp'))

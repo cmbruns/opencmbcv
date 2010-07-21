@@ -48,8 +48,50 @@ class TestPoint2(unittest.TestCase):
         
     # It appears that tuples cannot be compared to lists with == nor !=
 
-
+    def testListIndex(self):
+        li = [1, 2]
+        self.assertEqual(li[0], 1)
+        self.assertEqual(li[1], 2)
+        self.assertEqual(li[-1], 2)
+        self.assertEqual(li[-2], 1)
+        self.assertTrue(li[0] == 1)
+        self.assertTrue(li[0] != 2)
+        self.assertFalse(li[0] == 2)
+        self.assertFalse(li[0] != 1)
+        self.assertTrue(li[1] == 2)
+        self.assertTrue(li[1] != 1)
+        self.assertFalse(li[1] == 1)
+        self.assertFalse(li[1] != 2)
         
+    def testTupleIndex(self):
+        t = (1, 3)
+        self.assertEqual(t[0], 1)
+        self.assertEqual(t[1], 3)
+        self.assertEqual(t[-1], 3)
+        self.assertEqual(t[-2], 1)
+        self.assertTrue(t[0] == 1)
+        self.assertTrue(t[0] != 3)
+        self.assertFalse(t[0] == 3)
+        self.assertFalse(t[0] != 1)
+        self.assertTrue(t[1] == 3)
+        self.assertTrue(t[1] != 1)
+        self.assertFalse(t[1] == 1)
+        self.assertFalse(t[1] != 3)
+        
+    def testPoint2Index(self):
+        v = self.vec1
+        self.assertEqual(v[0], 5)
+        self.assertEqual(v[1], 2)
+        self.assertEqual(v[-1], 2)
+        self.assertEqual(v[-2], 5)
+        self.assertTrue(v[0] == 5)
+        self.assertTrue(v[0] != 2)
+        self.assertFalse(v[0] == 2)
+        self.assertFalse(v[0] != 5)
+        self.assertTrue(v[1] == 2)
+        self.assertTrue(v[1] != 5)
+        self.assertFalse(v[1] == 5)
+        self.assertFalse(v[1] != 2)
         
 if __name__ == '__main__':
     unittest.main()

@@ -20,10 +20,18 @@ class TestPoint2(unittest.TestCase):
                 
     def testListEquality(self):
         self.assertEqual([1, 2], [1, 2])
+        self.assertTrue([1, 2] == [1, 2])
+        self.assertFalse([1, 2] == [1, 3])
+        self.assertFalse([1, 2] != [1, 2])
+        self.assertTrue([1, 2] != [1, 3])
         
     def testTupleEquality(self):
         self.assertEqual((1, 3), (1, 3))
         self.assertEqual(tuple([1, 3]), (1, 3))
+        self.assertTrue((1, 3) == (1, 3))
+        self.assertFalse((1, 3) == (1, 2))
+        self.assertFalse((1, 3) != (1, 3))
+        self.assertTrue((1, 3) != (1, 2))
         
     def testPoint2Equality(self):
         v = self.vec1
@@ -35,8 +43,12 @@ class TestPoint2(unittest.TestCase):
         self.assertEqual(v, v2)
         self.assertTrue(v == v2)
         self.assertTrue(v != v3)
+        self.assertFalse(v == v3)
+        self.assertFalse(v != v2)
         
     # It appears that tuples cannot be compared to lists with == nor !=
+
+
         
         
 if __name__ == '__main__':

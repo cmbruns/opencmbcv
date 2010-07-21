@@ -12,7 +12,8 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-add_library(OpenCmbCv STATIC geom2D.cpp include/geom2D.hpp)
+file(GLOB SRCS "*.cpp" "include/*.hpp")
+add_library(OpenCmbCv STATIC ${SRCS})
 # Hack to place library in predictable location, regardless of "build type"
 if(MSVC)
     set_target_properties(OpenCmbCv PROPERTIES PREFIX "../")

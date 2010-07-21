@@ -3,9 +3,9 @@ Things To Do:
 1. In test_point2d.py:
     test == and != for:
         [x] plain numbers
-        [ ] lists vs lists
-        [ ] tuples vs tuples
-        [ ] point2ds vs point2ds
+        [x] lists vs lists
+        [x] tuples vs tuples
+        [x] point2ds vs point2ds
         
         Note: == and != do not work as expected between tuples and lists, so no testing of tuples vs. lists will be performed.
         

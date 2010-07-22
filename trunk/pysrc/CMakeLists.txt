@@ -38,6 +38,7 @@ set(GENERATE_SOURCE_PY "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.py")
 configure_file(generate_bp_source.py.in "${GENERATE_SOURCE_PY}" @ONLY)
 
 # Generate boost python source at build time
+file(GLOB WRAP_SRCS "include/*.hpp")
 set(BPGEN_STAMP "${CMAKE_CURRENT_SOURCE_DIR}/generated_code/generate_bp.stamp")
 add_custom_command(
     COMMAND "${PYTHON_EXECUTABLE}" ${GENERATE_SOURCE_PY}
@@ -50,6 +51,7 @@ add_custom_command(
     DEPENDS
         ${GENERATE_SOURCE_PY}
         OpenCmbCv
+        ${WRAP_SRCS}
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     COMMENT "Creating boost python wrapper source files.  Examine generate_bp_source.err file for details"
 )
@@ -60,12 +62,14 @@ add_custom_target(GenerateBoostPythonSources
         "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.log"
         "${CMAKE_CURRENT_BINARY_DIR}/generate_bp_source.err"
         OpenCmbCv
+        ${WRAP_SRCS}
     SOURCES
         generate_bp_source.py.in
+        ${WRAP_SRCS}
 )
 
-# Build binary cmbcv module
 
+# Build binary cmbcv module
 
 set(PY_STAGING_DIR "${CMAKE_CURRENT_BINARY_DIR}/py_stage")
 file(MAKE_DIRECTORY "${PY_STAGING_DIR}")

@@ -2,7 +2,11 @@
 
 #include "boost/python.hpp"
 
-#include "geom2d.hpp"
+#include "indexing_suite/container_suite.hpp"
+
+#include "indexing_suite/vector.hpp"
+
+#include "wrap_opencmbcv.hpp"
 
 namespace bp = boost::python;
 
@@ -72,7 +76,18 @@ struct line2_t_wrapper : cmbcv::line2_t, bp::wrapper< cmbcv::line2_t > {
 
 };
 
+#include "indexing_suite/container_suite.hpp"
+
+#include "cmbcv_indexing_helpers.hpp"
+
 BOOST_PYTHON_MODULE(cmbcv){
+    { //::std::vector< double >
+        typedef bp::class_< std::vector< double > > indexing_suite_emission_helper_exposer_t;
+        indexing_suite_emission_helper_exposer_t indexing_suite_emission_helper_exposer = indexing_suite_emission_helper_exposer_t( "indexing_suite_emission_helper" );
+        bp::scope indexing_suite_emission_helper_scope( indexing_suite_emission_helper_exposer );
+        indexing_suite_emission_helper_exposer.def( bp::indexing::vector_suite< std::vector< double > >() );
+    }
+
     bp::class_< homogeneous_point2_t_wrapper >( "homogeneous_point2_t", bp::init< cmbcv::real_t, cmbcv::real_t, bp::optional< cmbcv::real_t > >(( bp::arg("x"), bp::arg("y"), bp::arg("w")=1.0e+0 )) )    
         .def_readwrite( "w", &cmbcv::homogeneous_point2_t::w )    
         .def_readwrite( "x", &cmbcv::homogeneous_point2_t::x )    
@@ -158,7 +173,11 @@ BOOST_PYTHON_MODULE(cmbcv){
 
     bp::class_< cmbcv::point2_t, bp::bases< cmbcv::vec2_t > >( "point2_t", bp::init< cmbcv::real_t, cmbcv::real_t >(( bp::arg("x"), bp::arg("y") )) )    
         .def( bp::init< cmbcv::homogeneous_point2_t const & >(( bp::arg("hp") )) )    
-        .def( "as__scope_cmbcv_scope_homogeneous_point2_t", &cmbcv::point2_t::operator ::cmbcv::homogeneous_point2_t  );
+        .def( "as__scope_cmbcv_scope_homogeneous_point2_t", &cmbcv::point2_t::operator ::cmbcv::homogeneous_point2_t  )    
+        .def(bp::indexing::container_suite<
+            cmbcv::point2_t,
+            bp::indexing::all_methods,
+            list_algorithms<point2_container_traits> >());
 
     bp::implicitly_convertible< cmbcv::point2_t, cmbcv::homogeneous_point2_t >();
 
@@ -187,7 +206,7 @@ BOOST_PYTHON_MODULE(cmbcv){
             "size"
             , (unsigned int ( ::cmbcv::vec3_t::* )(  ) const)( &::cmbcv::vec3_t::size ) );
 
-    bp::class_< cmbcv::vec_t< 2u > >( "vec_t_less__2u__greater_" )    
+    bp::class_< cmbcv::vec_t< 2u > >( "vector_type" )    
         .def( bp::self != bp::self )    
         .def( bp::self == bp::self )    
         .def( 
@@ -204,7 +223,7 @@ BOOST_PYTHON_MODULE(cmbcv){
             "size"
             , (unsigned int ( ::cmbcv::vec_t<2u>::* )(  ) const)( &::cmbcv::vec_t< 2u >::size ) );
 
-    bp::class_< cmbcv::vec_t< 3u > >( "vec_t_less__3u__greater_" )    
+    bp::class_< cmbcv::vec_t< 3u > >( "vector_type" )    
         .def( bp::self != bp::self )    
         .def( bp::self == bp::self )    
         .def( 

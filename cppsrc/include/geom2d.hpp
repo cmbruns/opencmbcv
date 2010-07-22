@@ -1,3 +1,6 @@
+#ifndef CMBCV_GEOM2D_HPP_
+#define CMBCV_GEOM2D_HPP_
+
 #include <cassert>
 #include <iostream>
 
@@ -15,19 +18,24 @@ namespace cmbcv {
     template<unsigned int DIM>
     class vec_t 
     {
+    public:
+        typedef real_t       value_type;
+        typedef value_type*  iterator;
+        typedef value_type const *  const_iterator;
+
     protected:
-        real_t data[DIM];
+        value_type data[DIM];
 
     public:
         unsigned int size() const {return DIM;}
 
-        const real_t& operator[](int ix) const {
+        const value_type& operator[](int ix) const {
             assert(ix >= 0);
             assert(ix < DIM);
             return data[ix];
         }
         
-        real_t& operator[](int ix) {
+        value_type& operator[](int ix) {
             assert(ix >= 0);
             assert(ix < DIM);
             return data[ix];
@@ -59,24 +67,35 @@ namespace cmbcv {
             os << "]";
             return os;
         }
+
+        // begin and end methods help with boost python indexing
+        const_iterator begin() const {return &data[0];}
+        iterator begin() {return &data[0];}
+        const_iterator end() const {return &data[DIM];}
+        iterator end() {return &data[DIM];}
     };
 
     class vec2_t
     {
     public:
+        typedef vec_t<2>                     vector_type;
+        typedef vector_type::value_type      value_type;
+        typedef vector_type::iterator        iterator;
+        typedef vector_type::const_iterator  const_iterator;
+
         // Use union to permit specifying content by members x, y
         union {
-            vec_t<2> vec;
-            struct { real_t x, y; };
+            vector_type vec;
+            struct { value_type x, y; };
         };
 
-        vec2_t(real_t x, real_t y) : x(x), y(y) {}
+        vec2_t(value_type x, value_type y) : x(x), y(y) {}
 
         unsigned int size() const {return vec.size();}
 
-        real_t& operator[](int ix) {return vec[ix];}
+        value_type& operator[](int ix) {return vec[ix];}
 
-        const real_t& operator[](int ix) const {return vec[ix];}
+        const value_type& operator[](int ix) const {return vec[ix];}
 
         bool operator!=(const vec2_t& rhs) const {
             return this->vec != rhs.vec;
@@ -89,24 +108,35 @@ namespace cmbcv {
         std::ostream& print(std::ostream& os) const {
             return vec.print(os);
         }
+
+        // begin and end methods help with boost python indexing
+        const_iterator begin() const {return vec.begin();}
+        iterator begin() {return vec.begin();}
+        const_iterator end() const {return vec.end();}
+        iterator end() {return vec.end();}
     };
 
     class vec3_t
     {
     public:
+        typedef vec_t<3>                vector_type;
+        typedef vector_type::value_type value_type;
+        typedef vector_type::iterator   iterator;
+        typedef vector_type::const_iterator  const_iterator;
+
         // Use union to permit specifying content by members x, y, z
         union {
-            vec_t<3> vec;
-            struct { real_t x, y, z; };
+            vector_type vec;
+            struct { value_type x, y, z; };
         };
 
-        vec3_t(real_t x, real_t y, real_t z) : x(x), y(y), z(z) {}
+        vec3_t(value_type x, value_type y, value_type z) : x(x), y(y), z(z) {}
 
         unsigned int size() const {return vec.size();}
 
-        real_t& operator[](int ix) {return vec[ix];}
+        value_type& operator[](int ix) {return vec[ix];}
 
-        const real_t& operator[](int ix) const {return vec[ix];}
+        const value_type& operator[](int ix) const {return vec[ix];}
 
         bool operator!=(const vec3_t& rhs) const {
             return this->vec != rhs.vec;
@@ -138,13 +168,18 @@ namespace cmbcv {
     class homogeneous_point2_t
     {
     public:
+        typedef vec_t<3>                vector_type;
+        typedef vector_type::value_type value_type;
+        typedef vector_type::iterator   iterator;
+        typedef vector_type::const_iterator  const_iterator;
+
         // Use union to permit specifying content by members x, y, w
         union {
-            vec_t<3> vec;
-            struct { real_t x, y, w; };
+            vector_type vec;
+            struct { value_type x, y, w; };
         };
 
-        homogeneous_point2_t(real_t x, real_t y, real_t w = 1.0)
+        homogeneous_point2_t(value_type x, value_type y, value_type w = 1.0)
             : x(x), y(y), w(w) {}
 
         // line through two points
@@ -152,9 +187,9 @@ namespace cmbcv {
 
         unsigned int size() const {return asVec3().size();}
 
-        real_t& operator[](int ix) {return asVec3()[ix];}
+        value_type& operator[](int ix) {return asVec3()[ix];}
 
-        const real_t& operator[](int ix) const {return asVec3()[ix];}
+        const value_type& operator[](int ix) const {return asVec3()[ix];}
 
         bool operator!=(const homogeneous_point2_t& rhs) const {
             return asVec3() != rhs.asVec3();
@@ -188,7 +223,7 @@ namespace cmbcv {
     // point2_t represents a column vector.
     class point2_t : public vec2_t {
     public:
-        point2_t(real_t x, real_t y) : vec2_t(x,y) {}
+        point2_t(value_type x, value_type y) : vec2_t(x,y) {}
 
         // point2 => homogeneous_point2 is cheap;
         // the reverse is not.
@@ -203,17 +238,22 @@ namespace cmbcv {
 
     class line2_t {
     public:
+        typedef vec_t<3>                vector_type;
+        typedef vector_type::value_type value_type;
+        typedef vector_type::iterator   iterator;
+        typedef vector_type::const_iterator  const_iterator;
+
         union {
-            vec_t<3> vec;
+            vector_type vec;
             // equation of the line ax + by + c = 0
-            struct { real_t a, b, c; };
+            struct { value_type a, b, c; };
         };
 
-        line2_t(real_t a, real_t b, real_t c)
+        line2_t(value_type a, value_type b, value_type c)
             : a(a), b(b), c(c) {}
 
-        real_t& operator[](int ix) {return asVec3()[ix];}
-        const real_t& operator[](int ix) const {return asVec3()[ix];}
+        value_type& operator[](int ix) {return asVec3()[ix];}
+        const value_type& operator[](int ix) const {return asVec3()[ix];}
 
         homogeneous_point2_t intersection(const line2_t& rhs) const {
             const line2_t& lhs = *this;
@@ -242,3 +282,4 @@ namespace cmbcv {
 
 } // namespace cmbcv
 
+#endif // CMBCV_GEOM2D_HPP_

@@ -76,8 +76,6 @@ struct line2_t_wrapper : cmbcv::line2_t, bp::wrapper< cmbcv::line2_t > {
 
 };
 
-#include "indexing_suite/container_suite.hpp"
-
 #include "cmbcv_indexing_helpers.hpp"
 
 BOOST_PYTHON_MODULE(cmbcv){
@@ -177,7 +175,7 @@ BOOST_PYTHON_MODULE(cmbcv){
         .def(bp::indexing::container_suite<
             cmbcv::point2_t,
             bp::indexing::all_methods,
-            list_algorithms<point2_container_traits> >());
+            list_algorithms<myvec_container_traits<cmbcv::point2_t> > >());
 
     bp::implicitly_convertible< cmbcv::point2_t, cmbcv::homogeneous_point2_t >();
 

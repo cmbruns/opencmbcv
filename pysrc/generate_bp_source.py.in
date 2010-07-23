@@ -42,13 +42,12 @@ def wrap_point2(mb):
     vec.include()
     # make point2 indexable
     point2 = mb.class_('point2_t')
-    mb.add_declaration_code('#include "indexing_suite/container_suite.hpp"')
     mb.add_declaration_code('#include "cmbcv_indexing_helpers.hpp"')
     point2.add_registration_code("""
         def(bp::indexing::container_suite<
             cmbcv::point2_t,
             bp::indexing::all_methods,
-            list_algorithms<point2_container_traits> >())
+            list_algorithms<myvec_container_traits<cmbcv::point2_t> > >())
     """)
 
 if __name__ == "__main__":

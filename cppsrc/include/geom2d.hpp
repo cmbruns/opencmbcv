@@ -182,7 +182,7 @@ namespace cmbcv {
         homogeneous_point2_t(value_type x, value_type y, value_type w = 1.0)
             : x(x), y(y), w(w) {}
 
-        // line through two points
+        /// Returns the line joining two points
         line2_t line(const homogeneous_point2_t& rhs) const;
 
         unsigned int size() const {return asVec3().size();}
@@ -255,6 +255,7 @@ namespace cmbcv {
         value_type& operator[](int ix) {return asVec3()[ix];}
         const value_type& operator[](int ix) const {return asVec3()[ix];}
 
+        /// Compute the point of intersection of two lines
         homogeneous_point2_t intersection(const line2_t& rhs) const {
             const line2_t& lhs = *this;
             // abuse vec3 cross product to get answer

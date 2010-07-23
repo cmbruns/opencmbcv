@@ -70,6 +70,8 @@ class TestPoint2(unittest.TestCase):
         self.assertFalse(li[1] == 1)
         self.assertFalse(li[1] != 2)
         # Make sure that using index out of range causes an error
+        # Sorry, Cami, this is more complicated looking than I would like
+        # It means "does li[2] cause an IndexError?"
         self.assertRaises(IndexError, li.__getitem__, 2)
         # TODO - test slicing also
         

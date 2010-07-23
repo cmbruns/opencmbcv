@@ -7,11 +7,12 @@ class TestPoint2(unittest.TestCase):
 
     def testPoint2(self):
         v = self.vec1
-        self.assertEqual(1+1, 2)
+        self.assertEqual(1+1, 2) # positive control
         self.assertEqual(v.x, 5)
         self.assertEqual(v.y, 2)
 
     def testNumberEquality(self):
+        # sanity check to make sure we understand what "==" means
         self.assertEqual(5, 5)
         self.assertTrue(5 == 5)
         self.assertFalse(5 == 4)
@@ -19,6 +20,9 @@ class TestPoint2(unittest.TestCase):
         self.assertTrue(5 != 4)
                 
     def testListEquality(self):
+        # make sure "==" works with built in types the way we
+        # expect, before testing the same way on our types, such as point2_t.
+        # And "!=" too.
         self.assertEqual([1, 2], [1, 2])
         self.assertTrue([1, 2] == [1, 2])
         self.assertFalse([1, 2] == [1, 3])
@@ -26,6 +30,9 @@ class TestPoint2(unittest.TestCase):
         self.assertTrue([1, 2] != [1, 3])
         
     def testTupleEquality(self):
+        # make sure "==" works with built in types the way we
+        # expect, before testing the same way on our types, such as point2_t.
+        # And "!=" too.
         self.assertEqual((1, 3), (1, 3))
         self.assertEqual(tuple([1, 3]), (1, 3))
         self.assertTrue((1, 3) == (1, 3))
@@ -62,6 +69,9 @@ class TestPoint2(unittest.TestCase):
         self.assertTrue(li[1] != 1)
         self.assertFalse(li[1] == 1)
         self.assertFalse(li[1] != 2)
+        # Make sure that using index out of range causes an error
+        self.assertRaises(IndexError, li.__getitem__, 2)
+        # TODO - test slicing also
         
     def testTupleIndex(self):
         t = (1, 3)

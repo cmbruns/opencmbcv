@@ -19,8 +19,8 @@ namespace cmbcv {
     class vec_t 
     {
     public:
-        typedef real_t       value_type;
-        typedef value_type*  iterator;
+        typedef real_t              value_type;
+        typedef value_type*         iterator;
         typedef value_type const *  const_iterator;
 
     protected:
@@ -119,9 +119,9 @@ namespace cmbcv {
     class vec3_t
     {
     public:
-        typedef vec_t<3>                vector_type;
-        typedef vector_type::value_type value_type;
-        typedef vector_type::iterator   iterator;
+        typedef vec_t<3>                     vector_type;
+        typedef vector_type::value_type      value_type;
+        typedef vector_type::iterator        iterator;
         typedef vector_type::const_iterator  const_iterator;
 
         // Use union to permit specifying content by members x, y, z
@@ -168,9 +168,9 @@ namespace cmbcv {
     class homogeneous_point2_t
     {
     public:
-        typedef vec_t<3>                vector_type;
-        typedef vector_type::value_type value_type;
-        typedef vector_type::iterator   iterator;
+        typedef vec_t<3>                     vector_type;
+        typedef vector_type::value_type      value_type;
+        typedef vector_type::iterator        iterator;
         typedef vector_type::const_iterator  const_iterator;
 
         // Use union to permit specifying content by members x, y, w
@@ -238,9 +238,9 @@ namespace cmbcv {
 
     class line2_t {
     public:
-        typedef vec_t<3>                vector_type;
-        typedef vector_type::value_type value_type;
-        typedef vector_type::iterator   iterator;
+        typedef vec_t<3>                     vector_type;
+        typedef vector_type::value_type      value_type;
+        typedef vector_type::iterator        iterator;
         typedef vector_type::const_iterator  const_iterator;
 
         union {
